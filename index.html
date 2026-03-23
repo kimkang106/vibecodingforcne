@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>생각만으로 현실이 되는 업무 자동화 | 충남 교육 바이브 코딩 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --deep: #16213e;
+    --accent: #e63946;
+    --gold: #f4a261;
+    --sage: #457b9d;
+    --light: #f1faee;
+    --cream: #fefae0;
+    --muted: #6c757d;
+    --border: #dee2e6;
+    --page-bg: #fafaf8;
+    --serif: 'Noto Serif KR', serif;
+    --sans: 'Noto Sans KR', sans-serif;
+    --mono: 'Space Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--page-bg);
+    color: var(--ink);
+    line-height: 1.8;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    min-height: 100vh;
+    background: var(--deep);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 40px;
+    text-align: center;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(230,57,70,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 10% 80%, rgba(69,123,157,0.2) 0%, transparent 60%);
+  }
+
+  .cover-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .cover-badge {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--gold);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    border: 1px solid rgba(244,162,97,0.4);
+    padding: 6px 18px;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover h1 {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 5vw, 3.2rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.3;
+    max-width: 700px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover h1 em {
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  .cover-subtitle {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.55);
+    margin-top: 20px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    margin: 32px auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-org {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.12em;
+    position: relative;
+    z-index: 1;
+    margin-top: 48px;
+  }
+
+  .cover-scroll {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.7rem;
+    font-family: var(--mono);
+    letter-spacing: 0.1em;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ── TOC ── */
+  .toc-section {
+    background: var(--cream);
+    padding: 80px 40px;
+    border-bottom: 3px solid var(--ink);
+  }
+
+  .toc-inner {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .toc-title {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 48px;
+    color: var(--ink);
+  }
+
+  .toc-list {
+    list-style: none;
+  }
+
+  .toc-part {
+    border-top: 1px solid var(--border);
+    padding: 20px 0;
+  }
+
+  .toc-part-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    cursor: pointer;
+  }
+
+  .toc-part-num {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    min-width: 30px;
+  }
+
+  .toc-part-title {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .toc-part-page {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-left: auto;
+  }
+
+  .toc-subs {
+    margin-top: 10px;
+    margin-left: 46px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .toc-sub {
+    font-size: 0.85rem;
+    color: var(--muted);
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+  }
+
+  .toc-sub a {
+    color: var(--sage);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .toc-sub a:hover { color: var(--accent); }
+
+  /* ── PART SECTIONS ── */
+  .part-section {
+    padding: 100px 40px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .part-header {
+    margin-bottom: 64px;
+    padding-bottom: 40px;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .part-number {
+    font-family: var(--mono);
+    font-size: 5rem;
+    font-weight: 700;
+    color: rgba(26,26,46,0.06);
+    line-height: 1;
+    margin-bottom: -16px;
+  }
+
+  .part-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .part-title {
+    font-family: var(--serif);
+    font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+    font-weight: 900;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+
+  .part-desc {
+    margin-top: 16px;
+    font-size: 0.95rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ── CHAPTER ── */
+  .chapter {
+    margin-bottom: 72px;
+  }
+
+  .chapter-num {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
+  }
+
+  .chapter-title {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .chapter-title::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 28px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .chapter p {
+    font-size: 0.97rem;
+    color: #333;
+    margin-bottom: 16px;
+    line-height: 1.9;
+  }
+
+  .chapter p strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* ── CALLOUT BOXES ── */
+  .callout {
+    border-radius: 2px;
+    padding: 24px 28px;
+    margin: 28px 0;
+    position: relative;
+  }
+
+  .callout-tip {
+    background: #e8f4f8;
+    border-left: 4px solid var(--sage);
+  }
+
+  .callout-warn {
+    background: #fff3e0;
+    border-left: 4px solid var(--gold);
+  }
+
+  .callout-key {
+    background: #fce4e4;
+    border-left: 4px solid var(--accent);
+  }
+
+  .callout-icon {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .callout p, .callout li {
+    font-size: 0.9rem !important;
+    color: #444 !important;
+    margin-bottom: 6px !important;
+    line-height: 1.7 !important;
+  }
+
+  .callout ul {
+    padding-left: 18px;
+    margin-top: 6px;
+  }
+
+  /* ── COMPARISON TABLE ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 28px 0;
+    font-size: 0.88rem;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .compare-table th {
+    background: var(--ink);
+    color: #fff;
+    padding: 12px 16px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-align: left;
+  }
+
+  .compare-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: #444;
+  }
+
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:nth-child(even) td { background: #f9f9f9; }
+
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-weight: 700;
+  }
+
+  .tag-rec { background: #e0f7e9; color: #2a7a4a; }
+  .tag-adv { background: #e8eaf6; color: #3949ab; }
+
+  /* ── PROMPT CARD ── */
+  .prompt-card {
+    background: var(--deep);
+    color: #e8e8e8;
+    border-radius: 4px;
+    padding: 28px 32px;
+    margin: 28px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .prompt-card::before {
+    content: 'VIBE PROMPT';
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: rgba(244,162,97,0.5);
+    letter-spacing: 0.2em;
+  }
+
+  .prompt-card-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+  }
+
+  .prompt-card blockquote {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: #d4e8f5;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-style: italic;
+  }
+
+  /* ── CHAT BUBBLES ── */
+  .chat-demo {
+    margin: 28px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .bubble-wrap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bubble-wrap.bad .bubble { background: #f5f5f5; border: 1px solid #ddd; }
+  .bubble-wrap.good .bubble { background: #e8f5e9; border: 1px solid #a5d6a7; }
+
+  .bubble {
+    padding: 14px 18px;
+    border-radius: 4px;
+    font-size: 0.88rem;
+    max-width: 85%;
+    position: relative;
+  }
+
+  .bubble-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .bad .bubble-label { color: var(--accent); }
+  .good .bubble-label { color: #2e7d32; }
+
+  .bubble-reply {
+    align-self: flex-end;
+    margin-top: 8px;
+    max-width: 85%;
+    background: #e3f2fd;
+    border: 1px solid #90caf9;
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-size: 0.83rem;
+    color: #1565c0;
+    font-style: italic;
+  }
+
+  /* ── CHECKLIST ── */
+  .checklist {
+    list-style: none;
+    margin: 20px 0;
+  }
+
+  .checklist li {
+    padding: 10px 0 10px 36px;
+    position: relative;
+    border-bottom: 1px dashed var(--border);
+    font-size: 0.9rem;
+    color: #444;
+  }
+
+  .checklist li::before {
+    content: '☐';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    font-size: 1.1rem;
+    color: var(--sage);
+  }
+
+  /* ── STEP PROCESS ── */
+  .steps {
+    counter-reset: step;
+    margin: 28px 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .step:last-child { border-bottom: none; }
+
+  .step-num {
+    width: 36px;
+    height: 36px;
+    background: var(--ink);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-content { flex: 1; }
+
+  .step-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+
+  .step p {
+    font-size: 0.88rem !important;
+    color: #555 !important;
+  }
+
+  /* ── ERROR TABLE ── */
+  .error-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.85rem;
+  }
+
+  .error-table th {
+    background: #333;
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+  }
+
+  .error-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .error-table tr:nth-child(even) td { background: #f9f9f9; }
+
+  .code-inline {
+    font-family: var(--mono);
+    font-size: 0.82em;
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 2px;
+    color: var(--accent);
+  }
+
+  /* ── CHEAT SHEET ── */
+  .cheatsheet {
+    background: var(--ink);
+    color: #fff;
+    padding: 48px 40px;
+    margin: 48px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cheatsheet::before {
+    content: 'CHEAT SHEET';
+    position: absolute;
+    top: 20px;
+    right: 28px;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 0.3em;
+  }
+
+  .cheatsheet h3 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    margin-bottom: 28px;
+    color: var(--gold);
+  }
+
+  .cheatsheet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .cheatsheet-item {
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 16px;
+  }
+
+  .cheatsheet-key {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .cheatsheet-val {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.6;
+  }
+
+  /* ── PART DIVIDER ── */
+  .part-divider {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 0;
+  }
+
+  /* ── COLOPHON / CLOSING ── */
+  .closing {
+    background: var(--deep);
+    color: #fff;
+    padding: 100px 40px;
+    text-align: center;
+  }
+
+  .closing h2 {
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--gold);
+  }
+
+  .closing p {
+    color: rgba(255,255,255,0.65);
+    max-width: 560px;
+    margin: 0 auto 16px;
+    font-size: 0.95rem;
+    line-height: 1.9;
+  }
+
+  .closing-quote {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    color: #fff;
+    font-style: italic;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 32px;
+    border: 1px solid rgba(255,255,255,0.15);
+    position: relative;
+  }
+
+  .closing-quote::before {
+    content: '"';
+    position: absolute;
+    top: -20px;
+    left: 24px;
+    font-size: 4rem;
+    color: var(--gold);
+    font-family: serif;
+    line-height: 1;
+  }
+
+  /* ── CERTIFICATE ── */
+  .certificate {
+    max-width: 600px;
+    margin: 60px auto 0;
+    border: 2px solid rgba(244,162,97,0.4);
+    padding: 40px;
+    text-align: center;
+    position: relative;
+  }
+
+  .certificate::before,
+  .certificate::after {
+    content: '✦';
+    position: absolute;
+    color: var(--gold);
+    font-size: 0.8rem;
+  }
+
+  .certificate::before { top: 10px; left: 16px; }
+  .certificate::after { bottom: 10px; right: 16px; }
+
+  .cert-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .cert-title {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .cert-name-line {
+    height: 1px;
+    background: rgba(255,255,255,0.2);
+    margin: 20px 0;
+  }
+
+  .cert-sign {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── NAV ── */
+  .site-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(26,26,46,0.95);
+    backdrop-filter: blur(8px);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    height: 50px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .site-nav.visible { transform: translateY(0); }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-right: auto;
+    white-space: nowrap;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 0 16px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 0.75rem;
+    font-family: var(--mono);
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── SECTION BG VARIANTS ── */
+  .bg-cream { background: var(--cream); }
+  .bg-light { background: var(--light); }
+  .bg-white { background: #fff; }
+  .bg-default { background: var(--page-bg); }
+
+  /* ── RESOURCE LIST ── */
+  .resource-list {
+    list-style: none;
+    margin: 20px 0;
+  }
+
+  .resource-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .resource-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .resource-body {}
+
+  .resource-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .resource-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── RCTF FORMULA ── */
+  .formula-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .formula-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 20px;
+    position: relative;
+  }
+
+  .formula-letter {
+    font-family: var(--mono);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: rgba(26,26,46,0.06);
+    line-height: 1;
+    position: absolute;
+    top: 12px;
+    right: 16px;
+  }
+
+  .formula-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .formula-ko {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .formula-example {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .part-section { padding: 60px 24px; }
+    .toc-section { padding: 60px 24px; }
+    .cover { padding: 60px 24px; }
+    .cheatsheet { padding: 36px 24px; }
+    .site-nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .compare-table { font-size: 0.78rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- FIXED NAV -->
+<nav class="site-nav" id="siteNav">
+  <span class="nav-logo">충남 바이브 코딩 가이드</span>
+  <ul class="nav-links">
+    <li><a href="#toc">목차</a></li>
+    <li><a href="#part1">Part 1</a></li>
+    <li><a href="#part2">Part 2</a></li>
+    <li><a href="#part3">Part 3</a></li>
+    <li><a href="#part4">Part 4</a></li>
+    <li><a href="#part5">Part 5</a></li>
+  </ul>
+</nav>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="cover-grid"></div>
+  <div class="cover-badge">충남 교육 가족을 위한 디지털 역량 강화 가이드</div>
+  <h1>생각만으로 현실이 되는<br>업무 자동화<br><em>바이브 코딩</em></h1>
+  <div class="cover-divider"></div>
+  <p class="cover-subtitle">코드를 몰라도, AI와 대화하면 업무가 달라집니다</p>
+  <div class="cover-org">충청남도교육청 &nbsp;|&nbsp; 충남온라인학교 &nbsp;|&nbsp; 2025</div>
+  <div class="cover-scroll">▼<br>SCROLL</div>
+</section>
+
+<!-- TOC -->
+<section class="toc-section" id="toc">
+  <div class="toc-inner">
+    <div class="section-label">Table of Contents</div>
+    <h2 class="toc-title">목차</h2>
+    <ul class="toc-list">
+
+      <li class="toc-part">
+        <div class="toc-part-head">
+          <span class="toc-part-num">Part 1</span>
+          <span class="toc-part-title">왜 지금 '바이브 코딩'인가?</span>
+          <span class="toc-part-page">P.1–10</span>
+        </div>
+        <div class="toc-subs">
+          <div class="toc-sub"><span>01.</span><a href="#p1-01">코딩의 패러다임이 변하다: 문법 공부에서 '의도(Vibe)'의 전달로</a></div>
+          <div class="toc-sub"><span>02.</span><a href="#p1-02">교육 현장의 디지털 전환: 왜 행정직원에게 코딩이 필요한가?</a></div>
+          <div class="toc-sub"><span>03.</span><a href="#p1-03">바이브 코딩의 핵심: "말만 하면 코드가 나오는 시대"</a></div>
+        </div>
+      </li>
+
+      <li class="toc-part">
+        <div class="toc-part-head">
+          <span class="toc-part-num">Part 2</span>
+          <span class="toc-part-title">준비물: 나의 인공지능 비서 고르기</span>
+          <span class="toc-part-page">P.11–20</span>
+        </div>
+        <div class="toc-subs">
+          <div class="toc-sub"><span>01.</span><a href="#p2-01">텍스트 기반 AI: ChatGPT, Claude, Gemini 활용법</a></div>
+          <div class="toc-sub"><span>02.</span><a href="#p2-02">코딩 특화 도구: Cursor, Code by Cline 등</a></div>
+          <div class="toc-sub"><span>03.</span><a href="#p2-03">환경 설정: 초보자도 5분 만에 끝내는 개발 환경 구축</a></div>
+        </div>
+      </li>
+
+      <li class="toc-part">
+        <div class="toc-part-head">
+          <span class="toc-part-num">Part 3</span>
+          <span class="toc-part-title">실전! 충남 교육 행정 맞춤형 레시피</span>
+          <span class="toc-part-page">P.21–40</span>
+        </div>
+        <div class="toc-subs">
+          <div class="toc-sub"><span>01.</span><a href="#p3-01">엑셀의 한계를 넘다: 수천 명의 데이터 1초 만에 정리하기</a></div>
+          <div class="toc-sub"><span>02.</span><a href="#p3-02">고교학점제 지원 도구: 수강 신청 자동 분류</a></div>
+          <div class="toc-sub"><span>03.</span><a href="#p3-03">반복 업무 탈출: 공문서 데이터 추출 및 보고서 초안 생성</a></div>
+        </div>
+      </li>
+
+      <li class="toc-part">
+        <div class="toc-part-head">
+          <span class="toc-part-num">Part 4</span>
+          <span class="toc-part-title">AI와 대화하는 법: 프롬프트 엔지니어링</span>
+          <span class="toc-part-page">P.41–46</span>
+        </div>
+        <div class="toc-subs">
+          <div class="toc-sub"><span>01.</span><a href="#p4-01">명확한 'Vibe' 전달법: R-C-T-F 공식</a></div>
+          <div class="toc-sub"><span>02.</span><a href="#p4-02">에러가 났을 때: AI와 함께 디버깅하며 배우는 법</a></div>
+        </div>
+      </li>
+
+      <li class="toc-part">
+        <div class="toc-part-head">
+          <span class="toc-part-num">Part 5</span>
+          <span class="toc-part-title">더 멀리 가기 위한 가이드</span>
+          <span class="toc-part-page">P.47–50</span>
+        </div>
+        <div class="toc-subs">
+          <div class="toc-sub"><span>01.</span><a href="#p5-01">지속 가능한 자가 학습: 추천 커뮤니티 및 유튜브 채널</a></div>
+          <div class="toc-sub"><span>02.</span><a href="#p5-02">맺음말: 기술은 도구일 뿐, 중요한 것은 여러분의 아이디어</a></div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PART 1 ═══════════════════════ -->
+<hr class="part-divider">
+<section class="bg-default" id="part1">
+<div class="part-section">
+
+  <div class="part-header">
+    <div class="part-number">01</div>
+    <div class="part-label">Part One</div>
+    <h2 class="part-title">왜 지금<br>'바이브 코딩'인가?</h2>
+    <p class="part-desc">기술적인 내용보다 '왜 우리가 이 변화에 올라타야 하는가'에 대한 동기부여와 공감에 집중합니다.</p>
+  </div>
+
+  <div class="chapter" id="p1-01">
+    <div class="chapter-num">CHAPTER 01</div>
+    <h3 class="chapter-title">코딩의 패러다임이 변하다: 문법 공부에서 '의도(Vibe)'의 전달로</h3>
+
+    <p>불과 몇 년 전까지만 해도 '코딩을 배운다'는 것은 고통스러운 과정이었습니다. 영어 단어장처럼 <strong>if, for, while</strong> 같은 낯선 문법을 암기하고, 세미콜론(;) 하나만 빠져도 작동하지 않는 까다로운 규칙과 싸워야 했죠. 많은 이들이 "내 업무에 도움이 될 것 같긴 한데, 너무 어렵다"며 중간에 포기하곤 했습니다.</p>
+
+    <p>하지만 이제 시대가 변했습니다. <strong>'바이브 코딩(Vibe Coding)'</strong>의 시대가 열린 것입니다.</p>
+
+    <div class="callout callout-key">
+      <div class="callout-title">🎯 바이브 코딩이란?</div>
+      <p>컴퓨터 언어를 몰라도, 내가 원하는 결과물의 <strong>'느낌(Vibe)'과 '의도'를 일상 언어로 설명하여 프로그램을 만드는 방식</strong>입니다. 마치 숙련된 조수에게 "이 엑셀 파일에서 학교별로 데이터를 나눠서 저장해 줘"라고 말하면 조수가 알아서 작업을 해오는 것과 같습니다.</p>
+    </div>
+
+    <p>이제 여러분은 복잡한 문법을 외울 필요가 없습니다. 대신 <strong>'무엇이 문제인지'를 정확히 정의하고</strong>, AI에게 '어떤 결과를 원하는지' 조리 있게 설명하는 능력, 즉 '바이브'를 전달하는 능력이 가장 중요한 기술이 되었습니다.</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-title">💡 핵심 요약</div>
+      <ul>
+        <li><strong>과거의 코딩:</strong> 컴퓨터의 언어를 인간이 배워서 소통함 (어렵고 긴 학습 시간)</li>
+        <li><strong>바이브 코딩:</strong> 인간의 언어를 AI가 이해하고 코드로 번역함 (쉽고 즉각적인 결과)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="chapter" id="p1-02">
+    <div class="chapter-num">CHAPTER 02</div>
+    <h3 class="chapter-title">교육 현장의 디지털 전환: 왜 행정직원에게 코딩이 필요한가?</h3>
+
+    <p>우리가 근무하는 충남교육청의 업무 환경은 그 어느 때보다 빠르게 변하고 있습니다. 특히 고교학점제의 전면 도입과 온라인 학교 운영, 디지털 교과서 도입 등은 우리에게 이전과는 다른 차원의 행정력을 요구하고 있습니다.</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-title">📊 왜 우리에게 자동화 기술이 필요한가?</div>
+      <ul>
+        <li><strong>데이터의 폭발적 증가:</strong> 학생들의 과목 선택권이 확대되면서 관리해야 할 데이터의 양과 복잡도가 기하급수적으로 늘어났습니다. 수작업으로는 한계가 명확합니다.</li>
+        <li><strong>단순 반복 업무에서의 해방:</strong> 매달 반복되는 통계 보고, 수백 개의 파일을 하나하나 열어 데이터를 취합하는 일... 이런 일들에 여러분의 소중한 창의성과 열정을 낭비해서는 안 됩니다.</li>
+        <li><strong>정확성과 공정성:</strong> 교육 행정에서 실수는 치명적입니다. 잘 짜인 코드 한 줄은 수천 명의 데이터를 처리할 때 단 하나의 오차도 허용하지 않습니다.</li>
+      </ul>
+    </div>
+
+    <p>코딩은 이제 '정보' 과목 선생님들만의 전유물이 아닙니다. 장학사, 행정직, 교육 공무직 등 교육 행정의 최전선에 있는 모든 분에게 가장 강력한 무기가 될 것입니다. 바이브 코딩은 여러분을 단순 작업자에서 <strong>'디지털 시스템 설계자'</strong>로 업그레이드해 줄 것입니다.</p>
+  </div>
+
+  <div class="chapter" id="p1-03">
+    <div class="chapter-num">CHAPTER 03</div>
+    <h3 class="chapter-title">바이브 코딩의 핵심: "말만 하면 코드가 나오는 시대"</h3>
+
+    <p>"정말 말만 하면 프로그램이 만들어질까?"라는 의구심이 드실 수도 있습니다. 하지만 지금 이 순간에도 수많은 현직자가 AI의 도움을 받아 업무용 도구를 뚝딱 만들어내고 있습니다.</p>
+
+    <p>바이브 코딩의 핵심 프로세스는 매우 단순합니다.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-title">관찰하기</div>
+          <p>"아, 이 업무 너무 귀찮은데? 자동화할 수 없을까?"라는 질문에서 시작합니다.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-title">말하기 — Vibe 전달</div>
+          <p>ChatGPT나 Claude 같은 AI에게 내 고민을 털어놓습니다. "나 지금 이런 엑셀 파일이 있는데, 학교 코드별로 파일을 쪼개서 이메일 보낼 준비를 하고 싶어. 파이썬으로 코드를 짜줘."</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-title">실행하기</div>
+          <p>AI가 준 코드를 복사해서 붙여넣고 실행 버튼을 누릅니다.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-title">수정하기</div>
+          <p>결과가 마음에 안 들면 다시 대화합니다. "학교 이름 뒤에 오늘 날짜도 붙여줘."</p>
+        </div>
+      </div>
+    </div>
+
+    <p>이 과정에서 여러분은 코드의 구조를 깊게 몰라도 됩니다. AI가 작성한 코드를 보며 '아, 이런 논리로 돌아가는구나'를 자연스럽게 체득하게 되는데, 이것이 바로 가장 효율적인 <strong>'실전형 학습'</strong>입니다.</p>
+
+    <div class="callout callout-key">
+      <div class="callout-title">✨ 핵심 메시지</div>
+      <p>바이브 코딩은 단순히 기술을 배우는 것이 아니라, 나의 상상력을 현실로 만드는 가장 빠른 지름길을 얻는 것입니다. 자, 이제 두려움을 버리고 AI라는 든든한 파트너와 함께 '업무 혁명'을 시작해 볼까요?</p>
+    </div>
+
+    <div style="margin-top: 48px; padding: 28px; border: 1px dashed var(--border); background: #fff;">
+      <div class="section-label" style="margin-bottom:12px;">📝 MEMO — 나만의 자동화 아이디어</div>
+      <p style="font-size:0.85rem; color:var(--muted); margin-bottom: 24px;">지금 당장 자동화하고 싶은 반복 업무를 적어보세요.</p>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div style="border-bottom: 1px solid #ddd; padding-bottom: 8px; min-height: 28px;"></div>
+        <div style="border-bottom: 1px solid #ddd; padding-bottom: 8px; min-height: 28px;"></div>
+        <div style="border-bottom: 1px solid #ddd; padding-bottom: 8px; min-height: 28px;"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════ PART 2 ═══════════════════════ -->
+<hr class="part-divider">
+<section class="bg-cream" id="part2">
+<div class="part-section">
+
+  <div class="part-header">
+    <div class="part-number">02</div>
+    <div class="part-label">Part Two</div>
+    <h2 class="part-title">준비물: 나의 인공지능<br>비서 고르기</h2>
+    <p class="part-desc">복잡한 이론보다 '지금 당장 어떤 도구를 켜야 하는가'에 대한 명쾌한 가이드를 제공합니다.</p>
+  </div>
+
+  <div class="chapter" id="p2-01">
+    <div class="chapter-num">CHAPTER 01</div>
+    <h3 class="chapter-title">텍스트 기반 AI: ChatGPT, Claude, Gemini 활용법</h3>
+
+    <p>가장 먼저 접하게 될 도구들은 우리가 흔히 아는 '채팅형 AI'입니다. 이들은 마치 똑똑한 인턴처럼 우리가 시키는 코딩 업무를 척척 해냅니다.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>AI 도구</th>
+          <th>특징</th>
+          <th>교육 행정 추천 용도</th>
+          <th>비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>ChatGPT</strong><br><span style="font-size:0.78rem; color:var(--muted)">OpenAI</span></td>
+          <td>가장 대중적이고 다재다능. 복잡한 로직 설명과 파이썬 코드 작성에 표준적 답변 제공</td>
+          <td>범용 코드 작성, 공문 초안, 보고서 요약</td>
+          <td><span class="tag tag-adv">입문 추천</span></td>
+        </tr>
+        <tr>
+          <td><strong>Claude</strong><br><span style="font-size:0.78rem; color:var(--muted)">Anthropic</span></td>
+          <td>개발자들 사이 최고 인기. 코딩 솜씨 정교하고 미묘한 뉘앙스(Vibe) 이해력 탁월</td>
+          <td>복잡한 데이터 처리, 긴 문서 분석, 세밀한 코드 작성</td>
+          <td><span class="tag tag-rec">★ 최우선 추천</span></td>
+        </tr>
+        <tr>
+          <td><strong>Gemini</strong><br><span style="font-size:0.78rem; color:var(--muted)">Google</span></td>
+          <td>구글 워크스페이스(시트·문서 등)와 연동성 뛰어남. 대용량 데이터 분석 강점</td>
+          <td>구글 시트 자동화, 구글 드라이브 연동 작업</td>
+          <td><span class="tag tag-adv">구글 환경 추천</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-tip">
+      <div class="callout-title">🏫 교육 행정가 추천</div>
+      <p>처음 시작하신다면 대화가 자연스러운 <strong>Claude</strong>를, 구글 시트 데이터를 자주 다루신다면 <strong>Gemini</strong>를 추천합니다.</p>
+    </div>
+  </div>
+
+  <div class="chapter" id="p2-02">
+    <div class="chapter-num">CHAPTER 02</div>
+    <h3 class="chapter-title">코딩 특화 도구: Cursor, Code by Cline 등</h3>
+
+    <p>채팅창에 코드를 복사하고 붙여넣는 게 번거로우신가요? 이제 전문가들이 쓰는 '진짜 도구'를 만나볼 차례입니다. 바이브 코딩의 정수는 바로 여기서 발휘됩니다.</p>
+
+    <div class="callout callout-key" style="margin-bottom: 20px;">
+      <div class="callout-title">⌨️ Cursor (커서)</div>
+      <p>현재 바이브 코딩의 <strong>'끝판왕'</strong>으로 불리는 편집기입니다. 일반적인 메모장처럼 생겼지만, 내 컴퓨터에 있는 여러 파일의 내용을 한꺼번에 이해하고 코드를 대신 작성해 줍니다. <span class="code-inline">Ctrl+K</span>만 누르고 "이 엑셀 파일을 읽어서 학교별로 분류하는 프로그램 만들어줘"라고 하면 끝입니다.</p>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-title">🤖 Code by Cline (클라인)</div>
+      <p>최근 급부상 중인 도구로, AI가 단순히 코드를 짜는 수준을 넘어 <strong>'직접 내 컴퓨터에서 파일을 만들고 실행까지'</strong> 대신 해줍니다. 마치 내 컴퓨터를 대신 조작해 주는 대리인(Agent)과 같습니다. 특히 <strong>MCP(Model Context Protocol)</strong>라는 기능을 활용하면 디자인 파일을 코드로 바꾸거나, 복잡한 데이터베이스와 연결하는 등 확장성이 무궁무진합니다.</p>
+    </div>
+  </div>
+
+  <div class="chapter" id="p2-03">
+    <div class="chapter-num">CHAPTER 03</div>
+    <h3 class="chapter-title">환경 설정: 초보자도 5분 만에 끝내는 개발 환경 구축</h3>
+
+    <p>"개발 환경 구축"이라는 말에 겁먹을 필요 없습니다. 딱 세 가지만 기억하세요.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Python 설치</div>
+          <p>대부분의 업무 자동화는 '파이썬(Python)'이라는 언어로 이루어집니다. 파이썬 공식 홈페이지에서 설치 버튼만 누르면 준비 끝입니다.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Cursor 설치</div>
+          <p>앞서 소개한 Cursor를 설치하세요. VS Code라는 전문가용 도구를 기반으로 만들어졌지만, 훨씬 사용하기 쉽습니다.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">API 키 준비</div>
+          <p>AI 비서에게 일을 시키기 위한 '통행증'과 같습니다. 처음에는 무료 크레딧을 활용해 보고, 업무 효율이 올라가면 소액 결제를 통해 본격적으로 활용할 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-title">⚠️ 보안 주의사항</div>
+      <p>교육청 업무 데이터를 다룰 때는 반드시 개인정보 보호 원칙을 준수해야 합니다. 학생들의 실명이나 주민번호가 포함된 데이터는 AI에게 직접 전달하지 말고, <strong>'홍길동 → 학생A'</strong>와 같이 가명 처리된 샘플 데이터를 활용해 코드를 먼저 만든 후, 실제 실행은 본인의 로컬 컴퓨터에서만 진행하는 습관을 가져야 합니다.</p>
+    </div>
+
+    <div style="margin-top: 32px;">
+      <div class="chapter-num" style="margin-bottom: 12px;">🛠️ 실습! 5분 완성 체크리스트</div>
+      <ul class="checklist">
+        <li>내 업무용 PC에 파이썬(Python)이 설치되어 있는가?</li>
+        <li>Claude나 ChatGPT 계정을 만들었는가?</li>
+        <li>Cursor를 설치하고 첫 화면을 띄워보았는가?</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════ PART 3 ═══════════════════════ -->
+<hr class="part-divider">
+<section class="bg-white" id="part3">
+<div class="part-section">
+
+  <div class="part-header">
+    <div class="part-number">03</div>
+    <div class="part-label">Part Three</div>
+    <h2 class="part-title">실전! 충남 교육 행정<br>맞춤형 레시피</h2>
+    <p class="part-desc">실제 업무에 '바이브 코딩'을 적용해 볼 차례입니다. 가장 시간이 많이 걸리고 번거로웠던 세 가지 대표 사례를 통해 변화를 체험해 보세요.</p>
+  </div>
+
+  <div class="chapter" id="p3-01">
+    <div class="chapter-num">CHAPTER 01</div>
+    <h3 class="chapter-title">엑셀의 한계를 넘다: 수천 명의 데이터 1초 만에 정리하기</h3>
+
+    <p>행정 업무의 80%는 엑셀입니다. 하지만 데이터가 수천 행이 넘어가거나, 수십 개의 파일을 하나로 합쳐야 할 때 엑셀은 무거워지고 우리의 눈은 피로해집니다.</p>
+
+    <div class="callout callout-warn">
+      <div class="callout-title">📋 시나리오</div>
+      <p>도내 100개 학교에서 취합한 '교실 정보화 기기 현황' 엑셀 파일들을 하나로 합치고, 노후화된 기기 대수가 많은 학교순으로 보고용 요약표를 만들어야 함.</p>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-label">AI에게 던지는 VIBE 프롬프트</div>
+      <blockquote>
+        "폴더 안에 있는 100개의 엑셀 파일을 읽어서 하나로 합쳐줘. 각 파일의 'A학교', 'B학교' 같은 이름은 파일명에서 추출해서 '학교명' 열에 넣어줘. 그다음 '구입연도'가 2019년 이전인 기기 대수를 학교별로 합산해서 내림차순으로 정리한 '노후기기_현황.xlsx' 파일을 만들어줘."
+      </blockquote>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-title">✅ 결과</div>
+      <p>AI는 <span class="code-inline">pandas</span>라는 강력한 라이브러리를 활용한 파이썬 코드를 작성해 줍니다. 여러분은 클릭 한 번으로 100개의 파일을 1초 만에 처리할 수 있습니다.</p>
+    </div>
+  </div>
+
+  <div class="chapter" id="p3-02">
+    <div class="chapter-num">CHAPTER 02</div>
+    <h3 class="chapter-title">고교학점제 지원 도구: 복잡한 수강 신청 자동 분류</h3>
+
+    <p>고교학점제 도입으로 가장 힘든 일 중 하나는 학생들의 다양한 선택 과목을 관리하는 일입니다. 복잡한 수강 신청 데이터를 분석하고 오류를 찾아내는 작업은 고도의 집중력을 요합니다.</p>
+
+    <div class="callout callout-warn">
+      <div class="callout-title">📋 시나리오</div>
+      <p>학생 300명의 선택 과목 리스트에서 '위계성'에 어긋나는 신청(예: 수학Ⅰ을 안 들었는데 수학Ⅱ 신청)이나 '중복 신청'을 찾아내야 함.</p>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-label">AI에게 던지는 VIBE 프롬프트</div>
+      <blockquote>
+        "첨부된 CSV 파일은 학생들의 수강 신청 데이터야. 1. 동일한 과목을 중복으로 신청한 학생 리스트를 뽑아줘. 2. '물리학Ⅱ'를 신청했는데 '물리학Ⅰ' 이수 기록이 없는 학생이 있는지 확인해 줘. 결과는 이름과 학번, 사유를 포함한 엑셀 파일로 추출해 줘."
+      </blockquote>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-title">✅ 결과</div>
+      <p>AI는 데이터의 논리적 결함을 순식간에 찾아냅니다. 사람이 눈으로 확인하면 꼬박 하루가 걸릴 일이 커피 한 잔 마시는 사이에 끝납니다.</p>
+    </div>
+  </div>
+
+  <div class="chapter" id="p3-03">
+    <div class="chapter-num">CHAPTER 03</div>
+    <h3 class="chapter-title">반복 업무 탈출: 공문서 데이터 추출 및 보고서 초안 생성</h3>
+
+    <p>우리는 매일 수많은 공문과 보고서를 읽고 씁니다. 특히 여러 학교에서 보낸 한글(HWP) 파일의 핵심 내용을 요약하거나 특정 데이터를 추출하는 일은 매우 고된 작업입니다.</p>
+
+    <div class="callout callout-warn">
+      <div class="callout-title">📋 시나리오</div>
+      <p>50개 학교에서 제출한 '학교 안전 점검 결과 보고서(HWP)'에서 각 학교의 '최종 등급'과 '미조치 사항'만 뽑아서 표로 정리해야 함.</p>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-label">AI에게 던지는 VIBE 프롬프트</div>
+      <blockquote>
+        "지정된 폴더 내의 모든 한글(.hwp) 파일을 읽어서 1. 학교명 2. 안전 등급 3. 주요 미조치 사항만 추출해 줘. 만약 미조치 사항이 '없음'이면 제외하고, 내용이 있는 경우만 모아서 보고서용 표로 만들어줘."
+      </blockquote>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-title">✅ 결과</div>
+      <p>파이썬의 <span class="code-inline">pyhwpx</span>나 <span class="code-inline">hwpapi</span> 등을 활용하는 코드를 AI가 작성해 줍니다. 수십 개의 파일을 일일이 열어 '복사-붙여넣기' 하던 고통에서 완전히 해방됩니다.</p>
+    </div>
+
+    <div class="callout callout-key" style="margin-top: 32px;">
+      <div class="callout-title">💡 실전 팁: AI에게 더 좋은 '바이브'를 주는 법</div>
+      <ul>
+        <li><strong>데이터의 구조를 알려주세요:</strong> "첫 번째 열은 학생 이름이고, 세 번째 열부터 과목명이야"라고 구체적으로 설명하면 AI가 더 정확한 코드를 짭니다.</li>
+        <li><strong>단계별로 요청하세요:</strong> 처음부터 너무 복잡한 일을 시키기보다, "먼저 파일들을 합쳐줘"라고 한 뒤에 "그다음 통계를 내줘"라고 순차적으로 명령하는 것이 성공 확률이 높습니다.</li>
+        <li><strong>샘플을 보여주세요:</strong> "이런 형식의 엑셀 결과물이 필요해"라고 예시 데이터 1~2행을 써주면 완벽한 결과가 나옵니다.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════ PART 4 ═══════════════════════ -->
+<hr class="part-divider">
+<section class="bg-default" id="part4">
+<div class="part-section">
+
+  <div class="part-header">
+    <div class="part-number">04</div>
+    <div class="part-label">Part Four</div>
+    <h2 class="part-title">AI와 대화하는 법:<br>프롬프트 엔지니어링</h2>
+    <p class="part-desc">바이브 코딩의 핵심은 '문법'이 아니라 '대화'입니다. AI가 우리의 의도를 120% 이해하게 만드는 대화의 기술을 배워봅니다.</p>
+  </div>
+
+  <div class="chapter" id="p4-01">
+    <div class="chapter-num">CHAPTER 01</div>
+    <h3 class="chapter-title">명확한 'Vibe' 전달법: R-C-T-F 공식</h3>
+
+    <p>AI에게 일을 시킬 때는 '누가, 왜, 무엇을, 어떻게' 해야 하는지 명확히 가이드라인을 주는 것이 좋습니다. 이를 위해 <strong>[R-C-T-F] 공식</strong>을 기억하세요.</p>
+
+    <div class="formula-grid">
+      <div class="formula-card">
+        <div class="formula-letter">R</div>
+        <div class="formula-label">Role · 역할 부여</div>
+        <div class="formula-ko">AI에게 전문가를</div>
+        <div class="formula-example">"너는 충남교육청의 10년 차 데이터 행정 전문가야."</div>
+      </div>
+      <div class="formula-card">
+        <div class="formula-letter">C</div>
+        <div class="formula-label">Context · 맥락 설명</div>
+        <div class="formula-ko">상황과 데이터 특징</div>
+        <div class="formula-example">"지금 고교학점제 수강 신청 기간이라 데이터가 아주 복잡해. 이름, 학번, 선택 과목 1~3지망이 들어있는 CSV야."</div>
+      </div>
+      <div class="formula-card">
+        <div class="formula-letter">T</div>
+        <div class="formula-label">Task · 구체적 작업</div>
+        <div class="formula-ko">단계별로 명확히</div>
+        <div class="formula-example">"1지망 과목이 정원(20명)을 초과한 과목 리스트를 뽑아줘. 해당 과목 학생들을 성적순으로 정렬해 줘."</div>
+      </div>
+      <div class="formula-card">
+        <div class="formula-letter">F</div>
+        <div class="formula-label">Format · 결과 형식</div>
+        <div class="formula-ko">원하는 결과물 지정</div>
+        <div class="formula-example">"결과는 초과과목_명단.xlsx 파일로 만들어주고, 화면에는 전체 초과 과목 수만 출력해 줘."</div>
+      </div>
+    </div>
+
+    <p>프롬프트의 품질이 결과물의 품질을 결정합니다. 아래 비교를 보세요.</p>
+
+    <div class="chat-demo">
+      <div class="bubble-wrap bad">
+        <div class="bubble-label">✗ 나쁜 프롬프트</div>
+        <div class="bubble">"엑셀 파일 합쳐줘."</div>
+        <div class="bubble-reply">어떤 파일인가요? 어떤 기준으로 합칠까요? 결과물은 어떤 형식이 필요한가요?</div>
+      </div>
+      <div class="bubble-wrap good" style="margin-top: 8px;">
+        <div class="bubble-label">✓ 좋은 Vibe 프롬프트</div>
+        <div class="bubble">"이 폴더의 모든 엑셀을 학교명 기준으로 합치고, 중복된 행은 삭제하는 파이썬 코드를 짜줘. 초보자도 이해할 수 있게 주석을 달아줘."</div>
+        <div class="bubble-reply">알겠습니다! 다음은 요청하신 기능을 수행하는 파이썬 코드입니다...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chapter" id="p4-02">
+    <div class="chapter-num">CHAPTER 02</div>
+    <h3 class="chapter-title">에러가 났을 때: AI와 함께 디버깅하며 배우는 법</h3>
+
+    <p>코드를 실행했는데 화면에 <strong>빨간색 영어(에러 메시지)</strong>가 가득 뜨면 누구나 당황합니다. 하지만 바이브 코딩에서 에러는 실패가 아니라 <strong>'학습의 기회'</strong>입니다.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">당황하지 말고 복사하기</div>
+          <p>화면에 뜬 에러 메시지를 처음부터 끝까지 그대로 복사하세요.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">AI에게 '왜?'라고 묻기</div>
+          <p>AI에게 이렇게 말해보세요. "이 코드를 실행했는데 이런 에러가 났어. [복사한 에러 메시지 붙여넣기] 왜 이런 일이 생겼고, 어떻게 고치면 돼?"</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">해결책 적용하고 이해하기</div>
+          <p>AI는 에러의 원인을 분석하고 수정된 코드를 줍니다. 이때 단순히 복사하는 게 아니라 "아, 파일 경로 앞에 'r'을 붙여야 하는구나" 같은 포인트를 하나씩 배워가는 것이 자가 학습의 핵심입니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="error-table">
+      <thead>
+        <tr>
+          <th>에러 이름</th>
+          <th>쉬운 비유</th>
+          <th>해결 방법</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="code-inline">ModuleNotFoundError</span></td>
+          <td>필요한 도구가 없어요</td>
+          <td>"판다스 설치하는 명령어 알려줘"</td>
+        </tr>
+        <tr>
+          <td><span class="code-inline">FileNotFoundError</span></td>
+          <td>파일 주소가 틀렸어요</td>
+          <td>파일명·경로 다시 확인</td>
+        </tr>
+        <tr>
+          <td><span class="code-inline">SyntaxError</span></td>
+          <td>문법이 틀렸어요</td>
+          <td>에러 메시지 그대로 AI에게 붙여넣기</td>
+        </tr>
+        <tr>
+          <td><span class="code-inline">KeyError</span></td>
+          <td>열 이름이 다르네요</td>
+          <td>엑셀 헤더 이름을 AI에게 다시 알려주기</td>
+        </tr>
+        <tr>
+          <td><span class="code-inline">IndexError</span></td>
+          <td>순서가 잘못됐어요</td>
+          <td>데이터 범위 재확인 요청</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-tip" style="margin-top: 32px;">
+      <div class="callout-title">📝 Part 4 실습 미션</div>
+      <ul class="checklist" style="margin-top: 12px;">
+        <li>AI에게 특정 역할을 부여하고 업무 요청해 보기 (예: "너는 교육과정 장학사야...")</li>
+        <li>일부러 오타를 내서 에러를 발생시키고 AI와 함께 해결해 보기</li>
+        <li>결과물의 형식을 '표', 'JSON', 'CSV' 등 다양하게 바꿔달라고 요청해 보기</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cheatsheet">
+    <h3>✦ 프롬프트 핵심 치트 시트</h3>
+    <div class="cheatsheet-grid">
+      <div class="cheatsheet-item">
+        <div class="cheatsheet-key">① 역할 부여</div>
+        <div class="cheatsheet-val">"너는 [직책]야"로 시작하면 AI가 더 정확히 이해합니다</div>
+      </div>
+      <div class="cheatsheet-item">
+        <div class="cheatsheet-key">② 파일 설명</div>
+        <div class="cheatsheet-val">열 구조와 데이터 예시를 1~2행만 보여주세요</div>
+      </div>
+      <div class="cheatsheet-item">
+        <div class="cheatsheet-key">③ 단계 분리</div>
+        <div class="cheatsheet-val">하나씩 순서대로 요청할수록 성공률 ↑</div>
+      </div>
+      <div class="cheatsheet-item">
+        <div class="cheatsheet-key">④ 형식 지정</div>
+        <div class="cheatsheet-val">"결과를 xlsx / CSV / 화면 출력으로 줘"</div>
+      </div>
+      <div class="cheatsheet-item">
+        <div class="cheatsheet-key">⑤ 에러 대처</div>
+        <div class="cheatsheet-val">빨간 글씨를 그대로 붙여넣고 "왜 났어?"라고 물어보세요</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════ PART 5 ═══════════════════════ -->
+<hr class="part-divider">
+<section class="bg-cream" id="part5">
+<div class="part-section">
+
+  <div class="part-header">
+    <div class="part-number">05</div>
+    <div class="part-label">Part Five</div>
+    <h2 class="part-title">더 멀리 가기 위한<br>가이드</h2>
+    <p class="part-desc">스스로 항해를 계속하기 위해 필요한 지도와 나침반을 챙길 시간입니다.</p>
+  </div>
+
+  <div class="chapter" id="p5-01">
+    <div class="chapter-num">CHAPTER 01</div>
+    <h3 class="chapter-title">지속 가능한 자가 학습: 추천 커뮤니티 및 유튜브 채널</h3>
+
+    <p>혼자 공부하면 막막할 때가 있습니다. 그럴 때는 앞서간 사람들의 발자취를 따라가 보세요. 바이브 코딩과 업무 자동화에 진심인 커뮤니티들을 소개합니다.</p>
+
+    <div class="chapter-num" style="margin: 28px 0 12px; font-size: 0.8rem;">📺 유튜브 채널 (실습 중심)</div>
+    <ul class="resource-list">
+      <li class="resource-item">
+        <div class="resource-icon">▶</div>
+        <div class="resource-body">
+          <div class="resource-name">조코딩 (JoCoding)</div>
+          <div class="resource-desc">비전공자도 쉽게 이해할 수 있는 코딩 입문 콘텐츠의 대명사입니다. 최신 AI 도구 활용법이 빠르게 업로드됩니다.</div>
+        </div>
+      </li>
+      <li class="resource-item">
+        <div class="resource-icon">▶</div>
+        <div class="resource-body">
+          <div class="resource-name">노마드 코더 (Nomad Coders)</div>
+          <div class="resource-desc">최신 기술 트렌드와 Cursor 같은 도구의 깊이 있는 활용법을 배울 수 있습니다.</div>
+        </div>
+      </li>
+      <li class="resource-item">
+        <div class="resource-icon">▶</div>
+        <div class="resource-body">
+          <div class="resource-name">공대최함장</div>
+          <div class="resource-desc">엑셀 자동화와 업무 효율화에 특화된 실무형 팁이 가득합니다.</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="chapter-num" style="margin: 28px 0 12px; font-size: 0.8rem;">🌐 커뮤니티 및 플랫폼</div>
+    <ul class="resource-list">
+      <li class="resource-item">
+        <div class="resource-icon">💬</div>
+        <div class="resource-body">
+          <div class="resource-name">지피터스 (GPTERS)</div>
+          <div class="resource-desc">국내 최대의 AI 활용 사례 공유 커뮤니티입니다. '업무 자동화' 게시판에서 다른 직장인들이 만든 코드를 구경해 보세요.</div>
+        </div>
+      </li>
+      <li class="resource-item">
+        <div class="resource-icon">🌍</div>
+        <div class="resource-body">
+          <div class="resource-name">ChatGPT / Claude 공식 포럼</div>
+          <div class="resource-desc">전 세계 사용자들이 공유하는 창의적인 프롬프트들을 만날 수 있습니다.</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="callout callout-tip" style="margin-top: 28px;">
+      <div class="callout-title">🏫 충남교육청 내부 학습 모임</div>
+      <p>가장 좋은 스승은 옆자리의 동료입니다. '바이브 코딩 자율 동아리'를 만들거나, 내부 게시판에 <strong>"나 이런 거 자동화해 봤어!"</strong>라고 자랑해 보세요. 여러분의 작은 공유가 교육청 전체의 문화를 바꿉니다.</p>
+    </div>
+  </div>
+
+  <div class="chapter" id="p5-02">
+    <div class="chapter-num">CHAPTER 02</div>
+    <h3 class="chapter-title">맺음말: 기술은 도구일 뿐, 중요한 것은 여러분의 아이디어</h3>
+
+    <p>이 책의 마지막 장을 넘기며 꼭 기억해 주셨으면 하는 한 가지가 있습니다.</p>
+
+    <div style="text-align: center; padding: 40px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 32px 0;">
+      <p style="font-family: var(--serif); font-size: 1.2rem; line-height: 1.8; color: var(--ink); font-style: italic; max-width: 520px; margin: 0 auto;">
+        "코딩 실력보다 중요한 것은,<br>
+        <strong>'불편함'을 그냥 넘기지 않는<br>여러분의 마음입니다."</strong>
+      </p>
+    </div>
+
+    <p>바이브 코딩은 복잡한 수식을 외우는 학문이 아닙니다. <strong>"이 반복적인 업무를 어떻게 하면 더 스마트하게 처리해서, 내가 교육 행정에 더 집중할 수 있을까?"</strong>라는 질문에 답을 찾아가는 과정입니다.</p>
+
+    <p>기술은 계속해서 발전할 것입니다. 오늘 배운 도구가 내일은 더 좋아진 도구로 바뀔 수도 있습니다. 하지만 <strong>'문제를 발견하고 해결하려는 의지'</strong>는 대체 불가능한 여러분만의 핵심 역량입니다.</p>
+
+    <p>이제 여러분의 컴퓨터 앞에 앉아, 가장 귀찮았던 업무 하나를 떠올려 보세요. 그리고 AI에게 가볍게 한마디 던져보는 것으로 시작하십시오.</p>
+
+    <div class="prompt-card" style="text-align: center;">
+      <div class="prompt-card-label" style="text-align:center;">첫 번째 바이브</div>
+      <blockquote style="font-size: 1.05rem;">"안녕, 나 충남교육청 직원인데... 이것 좀 도와줄래?"</blockquote>
+    </div>
+
+    <p style="margin-top: 24px;">여러분의 스마트한 업무 생활과 충남 교육의 혁신적인 미래를 진심으로 응원합니다!</p>
+  </div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════ CLOSING ═══════════════════════ -->
+<section class="closing">
+  <div class="section-label" style="color: rgba(255,255,255,0.3); margin-bottom:20px;">Appendix · 핵심 요약</div>
+  <h2>바이브 코딩 핵심 요약 치트 시트</h2>
+  <div style="max-width: 640px; margin: 40px auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left;">
+    <div style="border-top: 1px solid rgba(255,255,255,0.15); padding-top: 16px;">
+      <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 8px;">도구 선택</div>
+      <div style="font-size: 0.85rem; color: rgba(255,255,255,0.65); line-height: 1.7;">대화는 Claude, 실전 코딩은 Cursor, 구글 연동은 Gemini</div>
+    </div>
+    <div style="border-top: 1px solid rgba(255,255,255,0.15); padding-top: 16px;">
+      <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 8px;">프롬프트 공식</div>
+      <div style="font-size: 0.85rem; color: rgba(255,255,255,0.65); line-height: 1.7;">[역할 - 맥락 - 과업 - 형식]을 잊지 마세요</div>
+    </div>
+    <div style="border-top: 1px solid rgba(255,255,255,0.15); padding-top: 16px;">
+      <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 8px;">에러 해결</div>
+      <div style="font-size: 0.85rem; color: rgba(255,255,255,0.65); line-height: 1.7;">빨간 글씨는 복사해서 AI에게 그대로 전달하세요</div>
+    </div>
+    <div style="border-top: 1px solid rgba(255,255,255,0.15); padding-top: 16px;">
+      <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 8px;">보안 원칙</div>
+      <div style="font-size: 0.85rem; color: rgba(255,255,255,0.65); line-height: 1.7;">개인정보는 반드시 가명 처리 후 AI에게 입력하세요</div>
+    </div>
+  </div>
+
+  <!-- CERTIFICATE -->
+  <div class="certificate">
+    <div class="cert-label">Certificate of Completion</div>
+    <div class="cert-title">바이브 코딩 입문 수료증</div>
+    <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); margin: 0;">이 가이드를 완독한 당신은 이제</p>
+    <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); margin: 0;">'디지털 시스템 설계자'로서 첫 걸음을 내딛었습니다.</p>
+    <div class="cert-name-line"></div>
+    <div class="cert-sign">충청남도교육청 · 충남온라인학교 · 2025</div>
+  </div>
+</section>
+
+<script>
+  // Show nav after scroll
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('siteNav');
+    if (window.scrollY > window.innerHeight * 0.8) {
+      nav.classList.add('visible');
+    } else {
+      nav.classList.remove('visible');
+    }
+  });
+</script>
+</body>
+</html>
