@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8월 31일까지 얼마남았나</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f3ef;
+    --bg2: #ffffff;
+    --bg3: #ede9e3;
+    --border: rgba(0,0,0,0.09);
+    --border2: rgba(0,0,0,0.16);
+    --text: #1a1814;
+    --text2: #6b6660;
+    --text3: #b0aca6;
+    --accent: #c95c1a;
+    --red: #c0392b;
+    --blue: #1a5c9e;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1.25rem 4rem;
+  }
+  .wrapper { width: 100%; max-width: 480px; }
+
+  .today-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 2.5rem;
+  }
+  .today-date {
+    font-family: var(--mono);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .today-dow { font-size: 13px; color: var(--text3); font-weight: 300; }
+  .today-workday {
+    margin-left: auto;
+    font-size: 11px;
+    font-family: var(--mono);
+    letter-spacing: 0.05em;
+    padding: 3px 10px;
+    border-radius: 3px;
+  }
+  .today-workday.work { background: rgba(26,122,72,0.1); color: #1a6a42; }
+  .today-workday.off  { background: rgba(168,164,158,0.15); color: var(--text3); }
+
+  .main-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .main-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border2);
+    border-radius: 14px;
+    padding: 1.75rem 1.5rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .main-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .main-card.work::before { background: var(--accent); }
+  .main-card.cal::before  { background: var(--blue); }
+  .mc-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: var(--mono);
+    color: var(--text3);
+    margin-bottom: 1rem;
+  }
+  .mc-number {
+    font-family: var(--mono);
+    font-size: clamp(3rem, 10vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .main-card.work .mc-number { color: var(--accent); }
+  .main-card.cal  .mc-number { color: var(--blue); }
+  .mc-unit { font-size: 13px; color: var(--text3); margin-top: 6px; font-weight: 300; }
+
+  .deadline-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 0;
+    margin-bottom: 1.5rem;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text3);
+    letter-spacing: 0.05em;
+  }
+  .deadline-row::before, .deadline-row::after {
+    content: ''; flex: 1; height: 0.5px; background: var(--border2);
+  }
+
+  .cal-panel {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .cal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .cal-month-title { font-family: var(--mono); font-size: 13px; color: var(--text); }
+  .cal-nav-btn {
+    background: none;
+    border: 0.5px solid var(--border2);
+    color: var(--text2);
+    width: 28px; height: 28px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .cal-nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; text-align: center; }
+  .cal-dname { font-family: var(--mono); font-size: 9px; color: var(--text3); padding: 4px 0 6px; letter-spacing: 0.04em; }
+  .cal-day { font-family: var(--mono); font-size: 12px; color: var(--text2); padding: 5px 2px; border-radius: 4px; line-height: 1; }
+  .cal-day.today-cell {
+    background: var(--accent); color: #fff; font-weight: 500;
+    border-radius: 50%; width: 27px; height: 27px;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto;
+  }
+  .cal-day.deadline-cell { outline: 1.5px solid var(--blue); outline-offset: -1px; border-radius: 4px; color: var(--blue); font-weight: 500; }
+  .cal-day.hol { color: var(--red); }
+  .cal-day.sat { color: var(--blue); }
+  .cal-day.past { opacity: 0.28; }
+  .cal-day.workday { color: var(--text); }
+
+  .hol-panel {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .hol-title {
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    font-family: var(--mono); color: var(--text3); padding: 1rem 1.25rem 0.5rem;
+  }
+  .hol-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.7rem 1.25rem; border-top: 0.5px solid var(--border); gap: 1rem;
+  }
+  .hol-name { font-size: 13px; color: var(--text); }
+  .hol-date { font-family: var(--mono); font-size: 11px; color: var(--text3); white-space: nowrap; }
+  .hol-d {
+    font-family: var(--mono); font-size: 11px; color: var(--accent);
+    background: rgba(201,92,26,0.1); padding: 2px 8px; border-radius: 3px; white-space: nowrap;
+  }
+  .no-hol { padding: 1.5rem; text-align: center; font-size: 13px; color: var(--text3); }
+
+  .footer { text-align: center; font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <h1 style="font-size:1.1rem; font-weight:500; color:var(--text); margin-bottom:1.5rem; letter-spacing:-0.01em;">8월 31일까지 얼마남았나</h1>
+
+  <div class="today-row">
+    <div class="today-date" id="todayDate">—</div>
+    <div class="today-dow" id="todayDow">—</div>
+    <div class="today-workday" id="todayBadge"></div>
+  </div>
+
+  <div class="main-cards">
+    <div class="main-card work">
+      <div class="mc-label">남은 근무일</div>
+      <div class="mc-number" id="workLeft">—</div>
+      <div class="mc-unit">일</div>
+    </div>
+    <div class="main-card cal">
+      <div class="mc-label">남은 달력일</div>
+      <div class="mc-number" id="calLeft">—</div>
+      <div class="mc-unit">일</div>
+    </div>
+  </div>
+
+  <div class="deadline-row">마감 · 2026년 8월 31일 (월)</div>
+
+  <div class="cal-panel">
+    <div class="cal-head">
+      <button class="cal-nav-btn" onclick="navMonth(-1)">&#8249;</button>
+      <div class="cal-month-title" id="calTitle"></div>
+      <button class="cal-nav-btn" onclick="navMonth(1)">&#8250;</button>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+
+  <div class="hol-panel" id="holPanel"></div>
+
+  <div class="footer">매일 자동 갱신 · 브라우저 시간 기준</div>
+</div>
+
+<script>
+  const HOLIDAYS = [
+    { date: '2026-01-01', name: '신정' },
+    { date: '2026-01-28', name: '설날 연휴' },
+    { date: '2026-01-29', name: '설날' },
+    { date: '2026-01-30', name: '설날 연휴' },
+    { date: '2026-03-01', name: '삼일절' },
+    { date: '2026-05-05', name: '어린이날' },
+    { date: '2026-05-15', name: '부처님 오신 날' },
+    { date: '2026-06-06', name: '현충일' },
+    { date: '2026-08-15', name: '광복절' },
+  ];
+  const DEADLINE = new Date(2026, 7, 31);
+  const DOW_KR = ['일','월','화','수','목','금','토'];
+  let calY, calM;
+
+  function dateStr(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+  function isHoliday(d) { return HOLIDAYS.some(h => h.date === dateStr(d)); }
+  function isWorkday(d) { const w = d.getDay(); return w !== 0 && w !== 6 && !isHoliday(d); }
+  function countWorkdays(from, to) {
+    let c = 0, d = new Date(from); d.setHours(0,0,0,0);
+    const t = new Date(to); t.setHours(0,0,0,0);
+    while (d <= t) { if (isWorkday(d)) c++; d.setDate(d.getDate()+1); }
+    return c;
+  }
+
+  function update() {
+    const today = new Date(); today.setHours(0,0,0,0);
+    calY = today.getFullYear(); calM = today.getMonth();
+
+    document.getElementById('todayDate').textContent =
+      `${today.getFullYear()}.${String(today.getMonth()+1).padStart(2,'0')}.${String(today.getDate()).padStart(2,'0')}`;
+    document.getElementById('todayDow').textContent = DOW_KR[today.getDay()] + '요일';
+
+    const wd = isWorkday(today);
+    const badge = document.getElementById('todayBadge');
+    badge.textContent = wd ? '근무일' : '비근무일';
+    badge.className = 'today-workday ' + (wd ? 'work' : 'off');
+
+    document.getElementById('workLeft').textContent = today <= DEADLINE ? countWorkdays(today, DEADLINE) : 0;
+    document.getElementById('calLeft').textContent = Math.max(0, Math.round((DEADLINE - today) / 86400000));
+
+    renderHolidays(today);
+    renderCal();
+  }
+
+  function renderHolidays(today) {
+    const upcoming = HOLIDAYS.filter(h => { const d = new Date(h.date); return d >= today && d <= DEADLINE; });
+    const panel = document.getElementById('holPanel');
+    if (!upcoming.length) { panel.innerHTML = '<div class="no-hol">남은 공휴일이 없습니다</div>'; return; }
+    panel.innerHTML = '<div class="hol-title">남은 공휴일</div>' + upcoming.map(h => {
+      const d = new Date(h.date);
+      return `<div class="hol-item">
+        <span class="hol-name">${h.name}</span>
+        <span class="hol-date">${h.date.replace(/-/g,'.')} (${DOW_KR[d.getDay()]})</span>
+        <span class="hol-d">D-${Math.round((d - today) / 86400000)}</span>
+      </div>`;
+    }).join('');
+  }
+
+  function renderCal() {
+    document.getElementById('calTitle').textContent = `${calY}년 ${calM+1}월`;
+    const grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+    ['일','월','화','수','목','금','토'].forEach(n => {
+      const el = document.createElement('div'); el.className = 'cal-dname'; el.textContent = n; grid.appendChild(el);
+    });
+    const today = new Date(); today.setHours(0,0,0,0);
+    const first = new Date(calY, calM, 1);
+    const total = new Date(calY, calM+1, 0).getDate();
+    for (let i = 0; i < first.getDay(); i++) {
+      const el = document.createElement('div'); el.className = 'cal-day'; grid.appendChild(el);
+    }
+    for (let d = 1; d <= total; d++) {
+      const dt = new Date(calY, calM, d);
+      const el = document.createElement('div');
+      if (dt.getTime() === today.getTime()) {
+        el.className = 'cal-day today-cell';
+      } else if (dt.getTime() === DEADLINE.getTime()) {
+        el.className = 'cal-day deadline-cell';
+      } else {
+        const dow = dt.getDay();
+        let c = 'cal-day';
+        if (dt < today) c += ' past';
+        else if (isHoliday(dt) || dow === 0) c += ' hol';
+        else if (dow === 6) c += ' sat';
+        else c += ' workday';
+        el.className = c;
+      }
+      el.textContent = d;
+      grid.appendChild(el);
+    }
+  }
+
+  function navMonth(dir) {
+    calM += dir;
+    if (calM < 0) { calM = 11; calY--; }
+    if (calM > 11) { calM = 0; calY++; }
+    if (calY > 2026 || (calY === 2026 && calM > 7)) { calY = 2026; calM = 7; }
+    renderCal();
+  }
+
+  update();
+  const now = new Date();
+  setTimeout(update, new Date(now.getFullYear(), now.getMonth(), now.getDate()+1) - now);
+</script>
+</body>
+</html>
