@@ -499,6 +499,7 @@
     <div class="hero-step-pill"><span class="num">3</span>코드 가져오기</div>
     <div class="hero-step-pill"><span class="num">4</span>수정 후 반영</div>
     <div class="hero-step-pill"><span class="num">5</span>충돌 해결</div>
+    <div class="hero-step-pill"><span class="num" style="background:#7c3aed">✦</span>Claude Code로 작업</div>
   </div>
 </div>
 
@@ -515,6 +516,7 @@
       <li><a href="#s5"><span class="toc-num">05</span>수정 내용 올리기</a></li>
       <li><a href="#s6"><span class="toc-num">06</span>충돌 해결하기</a></li>
       <li><a href="#s7"><span class="toc-num">07</span>일상적인 작업 흐름</a></li>
+      <li><a href="#s8"><span class="toc-num" style="color:#a78bfa">✦</span>Claude Code로 작업하기</a></li>
     </ul>
   </div>
 
@@ -1077,6 +1079,250 @@
 
 <span class="comment"># 올리기</span>
 <span class="cmd">git</span> push origin main</code>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+  <!-- ─────────────────────────────────────────── -->
+  <!-- STEP 8 — Claude Code -->
+  <!-- ─────────────────────────────────────────── -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="section-number" style="background:rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.3);color:#a78bfa">✦ BONUS</div>
+      <div class="section-title-wrap">
+        <h2>Claude Code로 작업하기</h2>
+        <p>코드를 몰라도 AI에게 말로 설명해서 수정할 수 있습니다</p>
+      </div>
+    </div>
+
+    <div class="tip-box info" style="margin-bottom:20px">
+      <span class="tip-icon">🤖</span>
+      <span><strong>Claude Code란?</strong> 터미널에서 AI(Claude)와 대화하며 코드를 수정·추가하는 도구입니다. "이 부분을 이렇게 바꿔줘"라고 말하면 AI가 직접 파일을 수정해 줍니다. 코딩 경험이 없어도 됩니다.</span>
+    </div>
+
+    <div class="steps">
+
+      <!-- Node.js 설치 -->
+      <div class="step open">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon" style="background:rgba(124,58,237,0.15)">📦</div>
+          <div class="step-title-wrap">
+            <div class="step-label">사전 준비</div>
+            <div class="step-title">Node.js 설치하기</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="desc">Claude Code는 Node.js 위에서 동작합니다. 먼저 Node.js를 설치해야 해요.</p>
+          <a class="dl-card" href="https://nodejs.org" target="_blank">
+            <div class="dl-icon">🟢</div>
+            <div class="dl-info">
+              <div class="dl-name">Node.js 다운로드</div>
+              <div class="dl-desc">nodejs.org — LTS 버전(왼쪽 버튼) 클릭해서 설치</div>
+            </div>
+            <div class="dl-arrow">↗</div>
+          </a>
+          <ul class="substeps">
+            <li><span class="dot" style="background:rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.25);color:#a78bfa">1</span><span>사이트에서 <strong>LTS(왼쪽 녹색 버튼)</strong>을 클릭해 설치 파일 다운로드</span></li>
+            <li><span class="dot" style="background:rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.25);color:#a78bfa">2</span><span>설치 파일 실행 → 기본값 그대로 Next → Install → Finish</span></li>
+            <li><span class="dot" style="background:rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.25);color:#a78bfa">3</span><span>설치 완료 후 Git Bash를 새로 열고 아래 명령어로 확인합니다</span></li>
+          </ul>
+          <div class="code-block">
+            <div class="code-label">설치 확인</div>
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <code><span class="cmd">node</span> <span class="flag">--version</span>
+<span class="comment"># v22.x.x 처럼 버전 숫자가 나오면 성공</span></code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Claude Code 설치 -->
+      <div class="step">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon" style="background:rgba(124,58,237,0.15)">🤖</div>
+          <div class="step-title-wrap">
+            <div class="step-label">핵심 설치</div>
+            <div class="step-title">Claude Code 설치하기</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="desc">Node.js가 설치되었으면 이제 Claude Code를 설치합니다. Git Bash를 열고 아래 명령어 한 줄만 입력하면 됩니다.</p>
+          <div class="code-block">
+            <div class="code-label">Git Bash 터미널</div>
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <code><span class="cmd">npm</span> install <span class="flag">-g</span> @anthropic-ai/claude-code</code>
+          </div>
+          <ul class="substeps">
+            <li><span class="dot" style="background:rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.25);color:#a78bfa">1</span><span>설치가 완료되면 아래 명령어로 버전을 확인합니다</span></li>
+          </ul>
+          <div class="code-block">
+            <div class="code-label">설치 확인</div>
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <code><span class="cmd">claude</span> <span class="flag">--version</span>
+<span class="comment"># 버전 숫자가 나오면 설치 성공</span></code>
+          </div>
+          <div class="tip-box warn">
+            <span class="tip-icon">⚠️</span>
+            <span><strong>winget으로 설치하면 오류가 납니다.</strong> 반드시 위의 <code style="background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px">npm install</code> 방법을 사용하세요.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Claude Code 실행 -->
+      <div class="step">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon" style="background:rgba(124,58,237,0.15)">▶️</div>
+          <div class="step-title-wrap">
+            <div class="step-label">시작하기</div>
+            <div class="step-title">프로젝트 폴더에서 Claude Code 실행</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="desc">Claude Code는 항상 <strong>작업할 프로젝트 폴더 안에서</strong> 실행해야 합니다. 폴더 밖에서 실행하면 엉뚱한 곳을 수정할 수 있어요.</p>
+          <div class="code-block">
+            <div class="code-label">Git Bash 터미널</div>
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <code><span class="comment"># 1. 프로젝트 폴더로 이동</span>
+<span class="cmd">cd</span> ~/Documents/transfer_cne
+
+<span class="comment"># 2. Claude Code 실행</span>
+<span class="cmd">claude</span></code>
+          </div>
+          <ul class="substeps">
+            <li><span class="dot" style="background:rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.25);color:#a78bfa">1</span><span>처음 실행 시 <strong>Anthropic 계정으로 로그인</strong>하라는 안내가 나옵니다. 브라우저가 열리면 로그인하세요</span></li>
+            <li><span class="dot" style="background:rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.25);color:#a78bfa">2</span><span>로그인 완료 후 터미널에 <code style="background:rgba(0,0,0,0.3);padding:2px 5px;border-radius:4px;font-family:var(--mono);font-size:12px">&gt;</code> 프롬프트가 나타나면 준비 완료</span></li>
+            <li><span class="dot" style="background:rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.25);color:#a78bfa">3</span><span>이제 한국어로 원하는 작업을 입력하면 됩니다</span></li>
+          </ul>
+          <div class="tip-box ok">
+            <span class="tip-icon">✅</span>
+            <span>Claude.ai 웹사이트 계정(claude.ai)으로 로그인하면 됩니다. 별도 API 키는 필요 없어요.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 실제 사용 예시 -->
+      <div class="step">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon" style="background:rgba(124,58,237,0.15)">💬</div>
+          <div class="step-title-wrap">
+            <div class="step-label">실제 사용</div>
+            <div class="step-title">이렇게 말하면 됩니다 — 프롬프트 예시</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="desc">Claude Code에게 수정을 요청할 때는 <strong>무엇을, 어디에, 어떻게</strong>를 명확하게 말해주는 게 좋습니다.</p>
+
+          <div class="code-block">
+            <div class="code-label">내용 수정 요청 예시</div>
+            <code><span class="str">"index.html에서 학교 이름 목록에 '천안여자고등학교'를 추가해줘"</span>
+
+<span class="str">"전입학 절차 안내 텍스트에서 담당자 전화번호를</span>
+<span class="str"> 041-1234-5678로 바꿔줘"</span>
+
+<span class="str">"FAQ 섹션에 '전학 신청 기간은 언제인가요?'라는 질문과</span>
+<span class="str"> 답변을 추가해줘. 답변은 '매 학기 초 2주간 접수합니다.'야"</span></code>
+          </div>
+
+          <div class="code-block">
+            <div class="code-label">디자인/레이아웃 수정 예시</div>
+            <code><span class="str">"헤더 배경색을 파란색에서 초록색으로 바꿔줘"</span>
+
+<span class="str">"모바일에서 글씨가 너무 작게 보여. 본문 글씨 크기를 키워줘"</span>
+
+<span class="str">"지도 섹션이 페이지 맨 아래로 가도록 순서를 바꿔줘"</span></code>
+          </div>
+
+          <div class="code-block">
+            <div class="code-label">파일 확인 요청 예시</div>
+            <code><span class="str">"현재 index.html에 어떤 섹션들이 있는지 설명해줘"</span>
+
+<span class="str">"학교 목록에 현재 몇 개의 학교가 등록되어 있어?"</span></code>
+          </div>
+
+          <div class="tip-box info">
+            <span class="tip-icon">💡</span>
+            <span>Claude Code는 수정 전에 <strong>"이렇게 수정할까요?"</strong>라고 먼저 확인을 구하거나, 수정 내용을 보여줍니다. 마음에 들면 <strong>y</strong>를 입력해서 적용하세요.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 수정 후 GitHub 올리기 -->
+      <div class="step">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon" style="background:rgba(124,58,237,0.15)">🚀</div>
+          <div class="step-title-wrap">
+            <div class="step-label">작업 완료 후</div>
+            <div class="step-title">Claude Code로 수정 후 GitHub에 올리기</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="desc">Claude Code가 파일을 수정해 주었으면, 그 내용을 GitHub에 올려야 다른 팀원도 볼 수 있어요. 아래 두 가지 방법 중 편한 것을 선택하세요.</p>
+
+          <p class="desc" style="font-weight:600;color:var(--text)">방법 1 — Claude Code에게 직접 부탁하기 (추천)</p>
+          <div class="code-block">
+            <div class="code-label">Claude Code 채팅창에 입력</div>
+            <code><span class="str">"방금 수정한 내용을 '학교 목록 업데이트' 메시지로 GitHub에 올려줘"</span></code>
+          </div>
+          <p class="desc">Claude Code가 <code style="background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px">git add → commit → push</code> 를 자동으로 처리해 줍니다.</p>
+
+          <p class="desc" style="font-weight:600;color:var(--text)">방법 2 — 직접 Git 명령어 사용 (STEP 05 참고)</p>
+          <div class="code-block">
+            <div class="code-label">Claude Code를 종료(Ctrl+C)하고 Git Bash에서</div>
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <code><span class="cmd">git</span> add .
+<span class="cmd">git</span> commit <span class="flag">-m</span> <span class="str">"수정 내용 요약"</span>
+<span class="cmd">git</span> push origin main</code>
+          </div>
+
+          <div class="tip-box warn">
+            <span class="tip-icon">⚠️</span>
+            <span>Claude Code로 작업을 시작하기 <strong>전에도 반드시 <code style="background:rgba(0,0,0,0.3);padding:2px 5px;border-radius:4px;font-family:var(--mono);font-size:12px">git pull</code> 먼저!</strong> 최신 코드를 받은 후 작업해야 충돌이 생기지 않아요.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 전체 루틴 with Claude Code -->
+      <div class="step">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon" style="background:rgba(124,58,237,0.15)">📋</div>
+          <div class="step-title-wrap">
+            <div class="step-label">최종 루틴</div>
+            <div class="step-title">Claude Code를 포함한 하루 작업 순서</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="code-block">
+            <div class="code-label">Claude Code 활용 작업 루틴</div>
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <code><span class="comment"># 1. 프로젝트 폴더로 이동</span>
+<span class="cmd">cd</span> ~/Documents/transfer_cne
+
+<span class="comment"># 2. 최신 코드 받기 (항상 먼저!)</span>
+<span class="cmd">git</span> pull origin main
+
+<span class="comment"># 3. Claude Code 실행</span>
+<span class="cmd">claude</span>
+
+<span class="comment"># --- Claude Code 채팅창에서 수정 요청 ---</span>
+<span class="comment"># > "index.html에서 ○○ 부분을 △△ 으로 바꿔줘"</span>
+<span class="comment"># > 확인 메시지가 나오면 y 입력</span>
+
+<span class="comment"># 4. 수정 완료 후 GitHub에 올리기 (Claude Code에게 부탁 or 직접)</span>
+<span class="comment"># > "방금 수정한 내용을 GitHub에 올려줘"</span></code>
+          </div>
+          <div class="tip-box ok">
+            <span class="tip-icon">🎉</span>
+            <span>코드를 몰라도 됩니다. 원하는 변경 사항을 <strong>한국어로 명확하게</strong> 설명하면 Claude Code가 처리해 줍니다. 모르는 것이 생기면 Claude Code에게 물어봐도 됩니다!</span>
           </div>
         </div>
       </div>
