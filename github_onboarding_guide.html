@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub 협업 시작 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f1b2d;
+    --navy2: #162236;
+    --blue: #2563eb;
+    --blue-light: #3b82f6;
+    --cyan: #06b6d4;
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border: rgba(255,255,255,0.07);
+    --card: rgba(255,255,255,0.04);
+    --card-hover: rgba(255,255,255,0.07);
+    --radius: 12px;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── 배경 데코 ── */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── 헤더 ── */
+  .hero {
+    position: relative;
+    padding: 72px 24px 56px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 200px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(37,99,235,0.15);
+    border: 1px solid rgba(37,99,235,0.3);
+    color: var(--blue-light);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    letter-spacing: 0.04em;
+  }
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0 auto 28px;
+    font-size: 15px;
+  }
+  .hero-steps {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .hero-step-pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hero-step-pill .num {
+    background: var(--blue);
+    color: #fff;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* ── 레이아웃 ── */
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin: 40px 0 48px;
+  }
+  .toc-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .toc-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 6px;
+  }
+  .toc-list li a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    transition: color 0.2s;
+  }
+  .toc-list li a:hover { color: var(--blue-light); }
+  .toc-list li a .toc-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--blue);
+    opacity: 0.7;
+    width: 22px;
+    flex-shrink: 0;
+  }
+
+  /* ── 섹션 ── */
+  .section {
+    margin-bottom: 56px;
+  }
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-number {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--blue);
+    background: rgba(37,99,235,0.1);
+    border: 1px solid rgba(37,99,235,0.2);
+    border-radius: 6px;
+    padding: 4px 10px;
+    white-space: nowrap;
+    margin-top: 3px;
+    letter-spacing: 0.05em;
+  }
+  .section-title-wrap h2 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .section-title-wrap p {
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  /* ── 스텝 카드 ── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .step:hover {
+    border-color: rgba(37,99,235,0.25);
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .step-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .step-icon.blue { background: rgba(37,99,235,0.15); }
+  .step-icon.green { background: rgba(16,185,129,0.15); }
+  .step-icon.cyan { background: rgba(6,182,212,0.15); }
+  .step-icon.yellow { background: rgba(245,158,11,0.15); }
+  .step-icon.red { background: rgba(239,68,68,0.12); }
+
+  .step-title-wrap { flex: 1; }
+  .step-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+  .step-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .step-arrow {
+    color: var(--text-muted);
+    font-size: 12px;
+    transition: transform 0.25s;
+  }
+  .step.open .step-arrow { transform: rotate(180deg); }
+
+  .step-body {
+    display: none;
+    padding: 0 22px 22px;
+    border-top: 1px solid var(--border);
+  }
+  .step.open .step-body { display: block; }
+
+  /* ── 본문 요소 ── */
+  .desc {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin: 16px 0 14px;
+    line-height: 1.75;
+  }
+
+  .substeps {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .substeps li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .substeps li .dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(37,99,235,0.15);
+    border: 1px solid rgba(37,99,235,0.25);
+    color: var(--blue-light);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-family: var(--mono);
+  }
+
+  /* ── 코드 블록 ── */
+  .code-block {
+    background: #0d1117;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 12px 0;
+    position: relative;
+    overflow-x: auto;
+  }
+  .code-block .code-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .code-block .code-label::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    display: inline-block;
+  }
+  .code-block code {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: #c9d1d9;
+    display: block;
+    white-space: pre;
+    line-height: 1.7;
+  }
+  .code-block code .comment { color: #6e7681; }
+  .code-block code .cmd { color: #79c0ff; }
+  .code-block code .str { color: #a5d6ff; }
+  .code-block code .flag { color: #d2a8ff; }
+
+  .copy-btn {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-family: var(--sans);
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--text);
+  }
+  .copy-btn.copied {
+    color: var(--green);
+    border-color: rgba(16,185,129,0.3);
+  }
+
+  /* ── 팁/경고 박스 ── */
+  .tip-box {
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    font-size: 13.5px;
+    line-height: 1.65;
+    display: flex;
+    gap: 12px;
+  }
+  .tip-box .tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .tip-box.info {
+    background: rgba(6,182,212,0.08);
+    border: 1px solid rgba(6,182,212,0.18);
+    color: #a5f3fc;
+  }
+  .tip-box.warn {
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.18);
+    color: #fde68a;
+  }
+  .tip-box.ok {
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.18);
+    color: #a7f3d0;
+  }
+
+  /* ── 다운로드 링크 ── */
+  .dl-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+    margin: 10px 0;
+  }
+  .dl-card:hover {
+    border-color: rgba(37,99,235,0.3);
+    background: var(--card-hover);
+  }
+  .dl-card .dl-icon {
+    width: 40px; height: 40px;
+    background: rgba(37,99,235,0.12);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .dl-card .dl-info { flex: 1; }
+  .dl-card .dl-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .dl-card .dl-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .dl-card .dl-arrow { color: var(--text-muted); font-size: 14px; }
+
+  /* ── 요약 플로 ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 20px 0;
+  }
+  .flow-item {
+    background: rgba(37,99,235,0.1);
+    border: 1px solid rgba(37,99,235,0.2);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--blue-light);
+    white-space: nowrap;
+  }
+  .flow-arrow {
+    color: var(--text-muted);
+    font-size: 16px;
+    padding: 0 6px;
+  }
+
+  /* ── 풋터 ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 24px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  /* ── 반응형 ── */
+  @media (max-width: 600px) {
+    .hero { padding: 48px 16px 40px; }
+    .container { padding: 0 16px 60px; }
+    .toc-list { grid-template-columns: 1fr; }
+    .flow { gap: 6px; }
+    .flow-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 히어로 -->
+<div class="hero">
+  <div class="hero-badge">🤝 전입학 안내 웹페이지 협업 가이드</div>
+  <h1>GitHub로 함께<br><span>코드 협업</span> 시작하기</h1>
+  <p>처음 시작하는 팀원을 위한 단계별 안내입니다.<br>설치부터 첫 코드 수정까지 따라만 하면 됩니다.</p>
+  <div class="hero-steps">
+    <div class="hero-step-pill"><span class="num">1</span>프로그램 설치</div>
+    <div class="hero-step-pill"><span class="num">2</span>GitHub 계정 만들기</div>
+    <div class="hero-step-pill"><span class="num">3</span>코드 가져오기</div>
+    <div class="hero-step-pill"><span class="num">4</span>수정 후 반영</div>
+    <div class="hero-step-pill"><span class="num">5</span>충돌 해결</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 목차 -->
+  <div class="toc">
+    <div class="toc-title">목차</div>
+    <ul class="toc-list">
+      <li><a href="#s1"><span class="toc-num">01</span>Git & VS Code 설치</a></li>
+      <li><a href="#s2"><span class="toc-num">02</span>GitHub 계정 만들기</a></li>
+      <li><a href="#s3"><span class="toc-num">03</span>초대 수락 & 클론</a></li>
+      <li><a href="#s4"><span class="toc-num">04</span>VS Code로 수정하기</a></li>
+      <li><a href="#s5"><span class="toc-num">05</span>수정 내용 올리기</a></li>
+      <li><a href="#s6"><span class="toc-num">06</span>충돌 해결하기</a></li>
+      <li><a href="#s7"><span class="toc-num">07</span>일상적인 작업 흐름</a></li>
+    </ul>
+  </div>
+
+  <!-- 전체 흐름 요약 -->
+  <div class="flow">
+    <div class="flow-item">Git 설치</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">GitHub 가입</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">초대 수락</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">clone(내려받기)</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">수정</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">commit → push</div>
+  </div>
+
+  <!-- ─────────────────────────────────────────── -->
+  <!-- STEP 1 -->
+  <!-- ─────────────────────────────────────────── -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-number">STEP 01</div>
+      <div class="section-title-wrap">
+        <h2>Git & VS Code 설치</h2>
+        <p>개발에 필요한 두 가지 프로그램을 설치합니다</p>
+      </div>
+    </div>
+    <div class="steps">
+
+      <div class="step open">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon blue">🔧</div>
+          <div class="step-title-wrap">
+            <div class="step-label">필수 설치</div>
+            <div class="step-title">Git 설치하기</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="desc">Git은 코드의 변경 이력을 관리하고 GitHub와 연결해주는 핵심 도구입니다. 설치하지 않으면 아무것도 할 수 없어요.</p>
+          <a class="dl-card" href="https://git-scm.com/download/win" target="_blank">
+            <div class="dl-icon">📥</div>
+            <div class="dl-info">
+              <div class="dl-name">Git for Windows 다운로드</div>
+              <div class="dl-desc">git-scm.com — 공식 사이트에서 설치 파일 다운로드</div>
+            </div>
+            <div class="dl-arrow">↗</div>
+          </a>
+          <ul class="substeps">
+            <li><span class="dot">1</span><span>위 링크를 클릭하면 자동으로 설치 파일(.exe) 다운로드가 시작됩니다</span></li>
+            <li><span class="dot">2</span><span>다운로드된 파일을 더블클릭해서 실행합니다</span></li>
+            <li><span class="dot">3</span><span>설치 창이 열리면 <strong>모든 항목에서 그냥 Next</strong> 를 눌러 기본값 그대로 설치합니다</span></li>
+            <li><span class="dot">4</span><span>설치 완료 후 <strong>"Git Bash Here" 체크박스</strong>가 있으면 켜둡니다 (기본값으로 켜져 있음)</span></li>
+          </ul>
+          <div class="tip-box info">
+            <span class="tip-icon">💡</span>
+            <span>설치가 완료되면 바탕화면이나 폴더에서 마우스 오른쪽 버튼을 눌렀을 때 <strong>"Open Git Bash here"</strong> 메뉴가 생깁니다. 이게 보이면 성공입니다.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon blue">📝</div>
+          <div class="step-title-wrap">
+            <div class="step-label">필수 설치</div>
+            <div class="step-title">VS Code 설치하기</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="desc">VS Code(Visual Studio Code)는 코드를 수정하는 편집기입니다. 메모장보다 훨씬 편리하고 무료입니다.</p>
+          <a class="dl-card" href="https://code.visualstudio.com/" target="_blank">
+            <div class="dl-icon">💻</div>
+            <div class="dl-info">
+              <div class="dl-name">VS Code 다운로드</div>
+              <div class="dl-desc">code.visualstudio.com — Download for Windows 버튼 클릭</div>
+            </div>
+            <div class="dl-arrow">↗</div>
+          </a>
+          <ul class="substeps">
+            <li><span class="dot">1</span><span>파란색 <strong>"Download for Windows"</strong> 버튼을 클릭합니다</span></li>
+            <li><span class="dot">2</span><span>다운로드된 .exe 파일을 실행합니다</span></li>
+            <li><span class="dot">3</span><span>설치 중 <strong>"PATH에 추가"</strong> 옵션이 있으면 반드시 체크합니다</span></li>
+            <li><span class="dot">4</span><span>나머지는 기본값 그대로 Next → Install → Finish</span></li>
+          </ul>
+          <div class="tip-box ok">
+            <span class="tip-icon">✅</span>
+            <span>설치 완료 후 VS Code를 열면 왼쪽에 파일 탐색기, 가운데에 코드 편집 창이 보입니다. 한국어 팩을 설치할지 물어보면 설치해도 됩니다.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon green">⚙️</div>
+          <div class="step-title-wrap">
+            <div class="step-label">초기 설정</div>
+            <div class="step-title">Git에 내 이름 등록하기</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="desc">Git에 커밋(수정 저장)할 때 "누가 수정했는지" 표시됩니다. 처음 한 번만 설정하면 됩니다.</p>
+          <p class="desc">바탕화면 빈 곳에서 <strong>마우스 오른쪽 버튼 → "Open Git Bash here"</strong> 를 클릭해서 Git Bash를 엽니다. 그 다음 아래 명령어를 입력합니다.</p>
+          <div class="code-block">
+            <div class="code-label">Git Bash 터미널</div>
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <code><span class="comment"># 이름 설정 (따옴표 안에 본인 이름을 입력하세요)</span>
+<span class="cmd">git</span> config <span class="flag">--global</span> user.name <span class="str">"홍길동"</span>
+
+<span class="comment"># 이메일 설정 (GitHub 가입할 이메일 주소)</span>
+<span class="cmd">git</span> config <span class="flag">--global</span> user.email <span class="str">"your@email.com"</span></code>
+          </div>
+          <div class="tip-box warn">
+            <span class="tip-icon">⚠️</span>
+            <span>이름과 이메일은 다음 단계에서 만들 GitHub 계정과 <strong>같은 이메일</strong>을 사용하는 것이 좋습니다.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────── -->
+  <!-- STEP 2 -->
+  <!-- ─────────────────────────────────────────── -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-number">STEP 02</div>
+      <div class="section-title-wrap">
+        <h2>GitHub 계정 만들기</h2>
+        <p>코드를 올리고 공유하는 플랫폼 계정을 생성합니다</p>
+      </div>
+    </div>
+    <div class="steps">
+
+      <div class="step open">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon cyan">🐱</div>
+          <div class="step-title-wrap">
+            <div class="step-label">계정 생성</div>
+            <div class="step-title">GitHub 회원가입</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <a class="dl-card" href="https://github.com/signup" target="_blank">
+            <div class="dl-icon">🐙</div>
+            <div class="dl-info">
+              <div class="dl-name">GitHub 회원가입 페이지</div>
+              <div class="dl-desc">github.com/signup</div>
+            </div>
+            <div class="dl-arrow">↗</div>
+          </a>
+          <ul class="substeps">
+            <li><span class="dot">1</span><span><strong>Email</strong>: 자주 쓰는 이메일 입력</span></li>
+            <li><span class="dot">2</span><span><strong>Password</strong>: 영문+숫자 조합 8자 이상</span></li>
+            <li><span class="dot">3</span><span><strong>Username</strong>: 영문으로 본인이 원하는 닉네임 (나중에 바꿀 수 있어요)</span></li>
+            <li><span class="dot">4</span><span>이메일 인증 코드를 입력하면 가입 완료</span></li>
+            <li><span class="dot">5</span><span>가입 후 <strong>계정 아이디(Username)를 담당자(시형 님)에게 알려주세요</strong> — 레포 초대를 보내드립니다</span></li>
+          </ul>
+          <div class="tip-box info">
+            <span class="tip-icon">💡</span>
+            <span>GitHub는 전 세계 개발자들이 코드를 올리고 공유하는 플랫폼입니다. 무료로 사용할 수 있어요.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────── -->
+  <!-- STEP 3 -->
+  <!-- ─────────────────────────────────────────── -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-number">STEP 03</div>
+      <div class="section-title-wrap">
+        <h2>초대 수락 & 코드 가져오기</h2>
+        <p>레포지터리에 참여하고 내 PC로 코드를 복사합니다</p>
+      </div>
+    </div>
+    <div class="steps">
+
+      <div class="step open">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon yellow">📨</div>
+          <div class="step-title-wrap">
+            <div class="step-label">초대 수락</div>
+            <div class="step-title">이메일 초대 수락하기</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <ul class="substeps">
+            <li><span class="dot">1</span><span>시형 님이 GitHub에서 Collaborator로 초대를 보내드립니다</span></li>
+            <li><span class="dot">2</span><span>가입한 이메일로 <strong>"You've been invited to collaborate"</strong> 메일이 도착합니다</span></li>
+            <li><span class="dot">3</span><span>메일 안의 <strong>"Accept invitation"</strong> 버튼을 클릭합니다</span></li>
+            <li><span class="dot">4</span><span>GitHub 사이트로 이동되며 수락 확인 버튼을 한 번 더 누릅니다</span></li>
+          </ul>
+          <div class="tip-box warn">
+            <span class="tip-icon">⚠️</span>
+            <span>초대 이메일이 스팸함에 들어가 있는 경우도 있으니 확인해보세요. 7일 내에 수락하지 않으면 초대가 만료됩니다.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon blue">📦</div>
+          <div class="step-title-wrap">
+            <div class="step-label">코드 내려받기</div>
+            <div class="step-title">Clone — 내 PC로 가져오기</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="desc"><strong>Clone</strong>이란 GitHub 서버에 있는 코드를 내 컴퓨터에 복사해 오는 것입니다. 처음 한 번만 하면 됩니다.</p>
+          <ul class="substeps">
+            <li><span class="dot">1</span><span>내 컴퓨터의 <strong>문서(Documents)</strong> 폴더 또는 원하는 폴더를 탐색기로 엽니다</span></li>
+            <li><span class="dot">2</span><span>폴더 빈 곳에서 <strong>마우스 오른쪽 버튼 → "Open Git Bash here"</strong> 클릭</span></li>
+            <li><span class="dot">3</span><span>검은 창(Git Bash)이 열리면 아래 명령어를 입력합니다</span></li>
+          </ul>
+          <div class="code-block">
+            <div class="code-label">Git Bash 터미널</div>
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <code><span class="cmd">git</span> clone https://github.com/curricenterhscne/transfer_cne.git</code>
+          </div>
+          <ul class="substeps">
+            <li><span class="dot">4</span><span>GitHub 로그인 창이 팝업되면 본인 계정으로 로그인합니다</span></li>
+            <li><span class="dot">5</span><span>다운로드가 완료되면 현재 폴더 안에 <strong>transfer_cne</strong> 폴더가 생깁니다</span></li>
+            <li><span class="dot">6</span><span>이 폴더가 이제 내 작업 공간입니다!</span></li>
+          </ul>
+          <div class="tip-box ok">
+            <span class="tip-icon">✅</span>
+            <span>Clone이 성공하면 <code style="background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px">Cloning into 'transfer_cne'...</code> 메시지가 보이고, 폴더가 만들어집니다.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon green">🗂️</div>
+          <div class="step-title-wrap">
+            <div class="step-label">VS Code로 열기</div>
+            <div class="step-title">폴더를 VS Code에서 열기</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <ul class="substeps">
+            <li><span class="dot">1</span><span>VS Code를 실행합니다</span></li>
+            <li><span class="dot">2</span><span>메뉴에서 <strong>파일(File) → 폴더 열기(Open Folder)</strong> 클릭</span></li>
+            <li><span class="dot">3</span><span>방금 생성된 <strong>transfer_cne</strong> 폴더를 선택합니다</span></li>
+            <li><span class="dot">4</span><span>왼쪽 패널에 파일 목록이 나타나면 성공입니다</span></li>
+          </ul>
+          <div class="tip-box info">
+            <span class="tip-icon">💡</span>
+            <span>또는 Git Bash에서 <code style="background:rgba(0,0,0,0.3);padding:2px 5px;border-radius:4px;font-family:var(--mono);font-size:12px">cd transfer_cne && code .</code> 를 입력하면 바로 VS Code가 열립니다.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────── -->
+  <!-- STEP 4 -->
+  <!-- ─────────────────────────────────────────── -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-number">STEP 04</div>
+      <div class="section-title-wrap">
+        <h2>파일 수정하기</h2>
+        <p>VS Code에서 코드를 편집합니다</p>
+      </div>
+    </div>
+    <div class="steps">
+
+      <div class="step open">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon blue">✏️</div>
+          <div class="step-title-wrap">
+            <div class="step-label">기본 편집</div>
+            <div class="step-title">VS Code에서 HTML 파일 수정하기</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <ul class="substeps">
+            <li><span class="dot">1</span><span>왼쪽 파일 탐색기에서 수정할 파일(예: <strong>index.html</strong>)을 클릭합니다</span></li>
+            <li><span class="dot">2</span><span>가운데 편집 창에 내용이 표시됩니다. 원하는 부분을 클릭해서 수정합니다</span></li>
+            <li><span class="dot">3</span><span>수정 후 <strong>Ctrl+S</strong>로 저장합니다</span></li>
+            <li><span class="dot">4</span><span>파일명 옆에 ● 점이 생기면 저장 안 된 상태 / 사라지면 저장 완료</span></li>
+          </ul>
+          <div class="tip-box info">
+            <span class="tip-icon">💡</span>
+            <span>VS Code에서 HTML 파일을 열면 태그가 색깔별로 구분되어(Syntax Highlighting) 훨씬 읽기 편합니다. <strong>Ctrl+Z</strong>로 실수를 되돌릴 수도 있어요.</span>
+          </div>
+          <div class="tip-box warn">
+            <span class="tip-icon">⚠️</span>
+            <span>파일을 수정하기 전에 반드시 <strong>최신 코드를 먼저 받아야(pull)</strong> 합니다. 5단계에서 설명합니다.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────── -->
+  <!-- STEP 5 -->
+  <!-- ─────────────────────────────────────────── -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-number">STEP 05</div>
+      <div class="section-title-wrap">
+        <h2>수정 내용 올리기</h2>
+        <p>내가 수정한 코드를 GitHub에 저장합니다 — commit & push</p>
+      </div>
+    </div>
+    <div class="steps">
+
+      <div class="step open">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon cyan">🔄</div>
+          <div class="step-title-wrap">
+            <div class="step-label">먼저 항상</div>
+            <div class="step-title">작업 전: 최신 코드 받기 (pull)</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="desc">작업을 시작하기 전에 항상 pull을 먼저 해서 다른 팀원이 올린 최신 코드를 받아옵니다. 이걸 빠뜨리면 충돌이 생길 수 있어요.</p>
+          <p class="desc"><strong>transfer_cne 폴더 안에서</strong> Git Bash를 열고:</p>
+          <div class="code-block">
+            <div class="code-label">Git Bash 터미널</div>
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <code><span class="comment"># transfer_cne 폴더 안으로 이동 (처음 열 때만)</span>
+<span class="cmd">cd</span> transfer_cne
+
+<span class="comment"># 최신 코드 받기</span>
+<span class="cmd">git</span> pull origin main</code>
+          </div>
+          <div class="tip-box ok">
+            <span class="tip-icon">✅</span>
+            <span>이미 최신 상태라면 <strong>"Already up to date."</strong> 라고 표시됩니다.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon green">📸</div>
+          <div class="step-title-wrap">
+            <div class="step-label">변경 저장</div>
+            <div class="step-title">commit — 수정 내용 기록하기</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="desc"><strong>commit</strong>은 수정한 내용을 "이 시점에 이렇게 저장했다"고 기록하는 행위입니다. 사진을 찍는 것과 비슷해요.</p>
+          <div class="code-block">
+            <div class="code-label">Git Bash 터미널</div>
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <code><span class="comment"># 변경된 모든 파일을 스테이징 (올릴 파일 선택)</span>
+<span class="cmd">git</span> add .
+
+<span class="comment"># 커밋 메시지 작성 (무엇을 수정했는지 간단히)</span>
+<span class="cmd">git</span> commit <span class="flag">-m</span> <span class="str">"전입학 절차 안내 내용 수정"</span></code>
+          </div>
+          <div class="tip-box info">
+            <span class="tip-icon">💡</span>
+            <span>커밋 메시지는 한국어로 써도 됩니다. <strong>"무엇을 왜 수정했는지"</strong> 짧게 적으면 나중에 이력 확인이 편합니다. 예: "학교 목록 3개 추가", "지도 필터 버그 수정"</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon blue">🚀</div>
+          <div class="step-title-wrap">
+            <div class="step-label">서버에 올리기</div>
+            <div class="step-title">push — GitHub에 업로드</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="desc"><strong>push</strong>는 내 컴퓨터에 저장한 commit을 GitHub 서버에 올리는 것입니다. push해야 다른 팀원도 내 수정 내용을 볼 수 있어요.</p>
+          <div class="code-block">
+            <div class="code-label">Git Bash 터미널</div>
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <code><span class="cmd">git</span> push origin main</code>
+          </div>
+          <ul class="substeps">
+            <li><span class="dot">1</span><span>처음 push할 때 GitHub 로그인 팝업이 열릴 수 있습니다. 로그인하면 됩니다</span></li>
+            <li><span class="dot">2</span><span>완료 후 GitHub 사이트에서 수정 내용이 올라가 있는지 확인해보세요</span></li>
+          </ul>
+          <div class="tip-box ok">
+            <span class="tip-icon">✅</span>
+            <span>push가 성공하면 <strong>https://github.com/curricenterhscne/transfer_cne</strong> 에서 내가 수정한 내용을 확인할 수 있습니다.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────── -->
+  <!-- STEP 6 -->
+  <!-- ─────────────────────────────────────────── -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-number">STEP 06</div>
+      <div class="section-title-wrap">
+        <h2>충돌 해결하기</h2>
+        <p>같은 파일을 동시에 수정했을 때 발생하는 충돌을 해결합니다</p>
+      </div>
+    </div>
+    <div class="steps">
+
+      <div class="step open">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon red">⚡</div>
+          <div class="step-title-wrap">
+            <div class="step-label">충돌이란?</div>
+            <div class="step-title">Conflict가 발생하는 상황</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="desc">두 사람이 같은 파일의 같은 줄을 동시에 다르게 수정하면 Git이 어느 쪽을 선택해야 할지 몰라서 충돌(Conflict)이 발생합니다.</p>
+          <div class="code-block">
+            <div class="code-label">충돌이 발생한 파일 예시</div>
+            <code><span class="comment"><<<<<<< HEAD (내가 수정한 내용)</span>
+&lt;h1&gt;충청남도 고등학교 전입학 안내&lt;/h1&gt;
+<span class="comment">=======</span>
+&lt;h1&gt;충남 고등학교 전학 안내&lt;/h1&gt;
+<span class="comment">>>>>>>> origin/main (상대방이 올린 내용)</span></code>
+          </div>
+          <ul class="substeps">
+            <li><span class="dot">1</span><span>VS Code에서 해당 파일을 열면 충돌 부분이 색깔로 표시됩니다</span></li>
+            <li><span class="dot">2</span><span><strong>"Accept Current Change"</strong>(내 것 선택) 또는 <strong>"Accept Incoming Change"</strong>(상대방 것 선택) 버튼을 클릭합니다</span></li>
+            <li><span class="dot">3</span><span>또는 두 내용을 함께 합칠 수도 있어요</span></li>
+            <li><span class="dot">4</span><span>수정 후 저장 → 다시 <code style="background:rgba(0,0,0,0.3);padding:2px 5px;border-radius:4px;font-family:var(--mono);font-size:12px">git add . → git commit → git push</code></span></li>
+          </ul>
+          <div class="tip-box warn">
+            <span class="tip-icon">⚠️</span>
+            <span>충돌이 어렵게 느껴지면 <strong>담당자(시형 님)에게 연락</strong>해 주세요. 함께 해결하면 됩니다. 충돌이 발생했다고 데이터가 삭제되지는 않습니다.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon green">🛡️</div>
+          <div class="step-title-wrap">
+            <div class="step-label">충돌 예방</div>
+            <div class="step-title">충돌을 줄이는 습관</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <ul class="substeps">
+            <li><span class="dot">1</span><span><strong>작업 전 pull 먼저</strong> — 항상 최신 코드를 받고 수정 시작</span></li>
+            <li><span class="dot">2</span><span><strong>담당 파일 분리</strong> — 서로 다른 파일을 맡아서 수정 (예: 시형 님은 map.js, 팀원은 survey.js)</span></li>
+            <li><span class="dot">3</span><span><strong>수정 전 채팅으로 공유</strong> — "지금 index.html 수정할게요" 미리 알리기</span></li>
+            <li><span class="dot">4</span><span><strong>자주 commit & push</strong> — 오래 들고 있을수록 충돌 위험 증가</span></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────── -->
+  <!-- STEP 7 -->
+  <!-- ─────────────────────────────────────────── -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-number">STEP 07</div>
+      <div class="section-title-wrap">
+        <h2>일상적인 작업 흐름 정리</h2>
+        <p>매일 반복하는 기본 루틴입니다</p>
+      </div>
+    </div>
+    <div class="steps">
+
+      <div class="step open">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon cyan">📋</div>
+          <div class="step-title-wrap">
+            <div class="step-label">전체 루틴</div>
+            <div class="step-title">하루 작업 순서 요약</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="code-block">
+            <div class="code-label">매일 작업하는 순서 (Git Bash)</div>
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <code><span class="comment"># 1. 프로젝트 폴더로 이동</span>
+<span class="cmd">cd</span> ~/Documents/transfer_cne
+
+<span class="comment"># 2. 최신 코드 받기 (항상 먼저!)</span>
+<span class="cmd">git</span> pull origin main
+
+<span class="comment"># --- VS Code에서 파일 수정 후 ---</span>
+
+<span class="comment"># 3. 변경 파일 스테이징</span>
+<span class="cmd">git</span> add .
+
+<span class="comment"># 4. 커밋 (무엇을 수정했는지 메시지 작성)</span>
+<span class="cmd">git</span> commit <span class="flag">-m</span> <span class="str">"수정 내용을 간단히 적기"</span>
+
+<span class="comment"># 5. GitHub에 업로드</span>
+<span class="cmd">git</span> push origin main</code>
+          </div>
+          <div class="tip-box ok">
+            <span class="tip-icon">🎉</span>
+            <span>이 5단계만 반복하면 됩니다. 처음에는 낯설지만 2~3번 해보면 금방 익숙해집니다. 모르는 것이 생기면 언제든 시형 님께 연락 주세요!</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-icon yellow">🔑</div>
+          <div class="step-title-wrap">
+            <div class="step-label">빠른 참고</div>
+            <div class="step-title">자주 쓰는 명령어 모음</div>
+          </div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="code-block">
+            <div class="code-label">Git 명령어 치트시트</div>
+            <code><span class="comment"># 현재 상태 확인 (어떤 파일이 수정됐는지)</span>
+<span class="cmd">git</span> status
+
+<span class="comment"># 변경 내역 확인 (어떤 줄이 바뀌었는지)</span>
+<span class="cmd">git</span> diff
+
+<span class="comment"># 수정 이력 보기</span>
+<span class="cmd">git</span> log <span class="flag">--oneline</span>
+
+<span class="comment"># 최신 코드 받기</span>
+<span class="cmd">git</span> pull origin main
+
+<span class="comment"># 스테이징 (전체)</span>
+<span class="cmd">git</span> add .
+
+<span class="comment"># 스테이징 (특정 파일만)</span>
+<span class="cmd">git</span> add index.html
+
+<span class="comment"># 커밋</span>
+<span class="cmd">git</span> commit <span class="flag">-m</span> <span class="str">"메시지"</span>
+
+<span class="comment"># 올리기</span>
+<span class="cmd">git</span> push origin main</code>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  충청남도교육청 중등교육과 &nbsp;·&nbsp; 전입학 안내 웹페이지 개발 협업 가이드
+</footer>
+
+<script>
+  function toggleStep(header) {
+    const step = header.closest('.step');
+    const isOpen = step.classList.contains('open');
+    step.classList.toggle('open', !isOpen);
+  }
+
+  function copyCode(btn) {
+    const block = btn.closest('.code-block');
+    const code = block.querySelector('code');
+    // 태그 제거하고 순수 텍스트만 추출
+    const text = code.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '복사됨 ✓';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = '복사';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  // 페이지 로드 시 첫 번째 스텝만 열린 상태로
+  document.querySelectorAll('.section').forEach(sec => {
+    const steps = sec.querySelectorAll('.step');
+    steps.forEach((s, i) => {
+      if (i !== 0) s.classList.remove('open');
+    });
+  });
+</script>
+
+</body>
+</html>
