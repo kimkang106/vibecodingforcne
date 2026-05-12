@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>충남교육청 AI 동아리 - GitHub 활용 사전 준비 안내</title>
+<style>
+  :root {
+    --primary: #1a5fa8;
+    --primary-dark: #134680;
+    --accent: #e63946;
+    --accent-soft: #fff0f0;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --border: #e1e6ee;
+    --text: #2c3e50;
+    --text-muted: #5a6a7a;
+    --code-bg: #1e2433;
+    --code-text: #e8eaed;
+    --success: #2d8a4e;
+    --warning: #d97706;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "맑은 고딕", "Malgun Gothic", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 60px 24px 70px;
+    text-align: center;
+  }
+  header .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    margin-bottom: 18px;
+    letter-spacing: 0.5px;
+  }
+  header h1 {
+    margin: 0 0 12px;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  header p {
+    margin: 0;
+    font-size: 17px;
+    opacity: 0.92;
+  }
+  .container {
+    max-width: 920px;
+    margin: -40px auto 60px;
+    padding: 0 20px;
+  }
+  .summary-box {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 28px 32px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    margin-bottom: 32px;
+    border-top: 5px solid var(--accent);
+  }
+  .summary-box h2 {
+    margin: 0 0 14px;
+    color: var(--accent);
+    font-size: 19px;
+  }
+  .summary-box ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  .summary-box li {
+    margin-bottom: 8px;
+  }
+  .summary-box strong {
+    color: var(--primary-dark);
+  }
+  section {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 36px 36px 30px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+  }
+  section h2 {
+    margin: 0 0 6px;
+    font-size: 24px;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  section h2 .num {
+    display: inline-flex;
+    width: 38px;
+    height: 38px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  section .lead {
+    color: var(--text-muted);
+    margin: 0 0 22px;
+    padding-left: 50px;
+    font-size: 15px;
+  }
+  section h3 {
+    margin: 28px 0 10px;
+    font-size: 17px;
+    color: var(--primary-dark);
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--border);
+  }
+  section h4 {
+    margin: 20px 0 8px;
+    font-size: 15px;
+    color: var(--text);
+  }
+  section p {
+    margin: 0 0 12px;
+  }
+  ol, ul {
+    padding-left: 22px;
+  }
+  ol li, ul li {
+    margin-bottom: 6px;
+  }
+  code {
+    background: #eef2f7;
+    color: #b8336a;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: "SF Mono", Consolas, "맑은 고딕", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 16px 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 12px 0 16px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+  }
+  .callout {
+    background: #f0f7ff;
+    border-left: 4px solid var(--primary);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 14.5px;
+  }
+  .callout.warning {
+    background: #fff8ec;
+    border-left-color: var(--warning);
+  }
+  .callout.success {
+    background: #f0faf3;
+    border-left-color: var(--success);
+  }
+  .callout strong {
+    color: var(--primary-dark);
+  }
+  .callout.warning strong {
+    color: var(--warning);
+  }
+  .step-card {
+    background: #fafbfd;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 12px 0;
+  }
+  .step-card .step-title {
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+    font-size: 15.5px;
+  }
+  .check-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  .check-list li {
+    padding: 10px 14px 10px 38px;
+    background: #fafbfd;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    position: relative;
+    border-left: 3px solid var(--primary);
+  }
+  .check-list li::before {
+    content: "☐";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--primary);
+  }
+  .platform-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 12px 0;
+  }
+  .platform-card {
+    background: #fafbfd;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .platform-card h4 {
+    margin: 0 0 12px;
+    color: var(--primary);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .platform-card h4::before {
+    content: "■";
+    color: var(--primary);
+  }
+  a.btn {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-top: 6px;
+    transition: background 0.15s;
+  }
+  a.btn:hover { background: var(--primary-dark); }
+  a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .glossary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .glossary-item {
+    background: #fafbfd;
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+  }
+  .glossary-item .term {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 4px;
+    font-size: 15px;
+  }
+  .glossary-item .def {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  @media (max-width: 720px) {
+    header { padding: 40px 18px 50px; }
+    header h1 { font-size: 24px; }
+    section { padding: 24px 20px; }
+    section .lead { padding-left: 0; }
+    .platform-tabs, .glossary { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">충청남도교육청 AI 동아리</div>
+  <h1>GitHub × Claude Code 사전 준비 안내</h1>
+  <p>동아리 활동 전에 미리 설치하고 가입해 두실 내용을 정리했습니다</p>
+</header>
+
+<div class="container">
+
+  <div class="summary-box">
+    <h2>이번 동아리 활동에서 함께 해볼 일</h2>
+    <ul>
+      <li><strong>공동 레포지토리(저장소)</strong>를 만들어 함께 코드를 관리합니다.</li>
+      <li><strong>GitHub Pages / Cloudflare Pages</strong>로 웹사이트를 직접 배포(deploy)해 봅니다.</li>
+      <li><strong>Claude Code</strong>로 AI에게 작업을 시키고 결과를 깃허브에 올리는 흐름을 익힙니다.</li>
+    </ul>
+    <p style="margin-top: 14px; color: var(--text-muted); font-size: 14px;">
+      당일에는 실습 시간이 빠듯합니다. 아래 1~3번까지는 <strong>꼭 미리</strong> 마치고 와 주세요.
+    </p>
+  </div>
+
+  <!-- ========== Section 1 ========== -->
+  <section>
+    <h2><span class="num">1</span>기본 프로그램 설치</h2>
+    <p class="lead">GitHub를 쓰려면 컴퓨터에 두 가지 도구가 필요합니다. <strong>Git</strong>(버전 관리 도구)과 <strong>VS Code</strong>(코드 편집기)입니다.</p>
+
+    <h3>1-1. Git 설치</h3>
+    <p>Git은 "파일이 언제, 누가, 어떻게 바뀌었는지" 기록하는 프로그램입니다. GitHub와 통신하려면 반드시 필요합니다.</p>
+
+    <div class="platform-tabs">
+      <div class="platform-card">
+        <h4>Windows</h4>
+        <ol>
+          <li><a href="https://git-scm.com/download/win" target="_blank">git-scm.com</a> 접속 → 자동 다운로드</li>
+          <li>설치 옵션은 모두 <strong>기본값</strong>으로 두고 Next 진행</li>
+          <li>설치 후 <code>Git Bash</code>가 시작 메뉴에 생기면 성공</li>
+        </ol>
+        <a class="btn" href="https://git-scm.com/download/win" target="_blank">다운로드</a>
+      </div>
+      <div class="platform-card">
+        <h4>macOS</h4>
+        <ol>
+          <li>터미널 열기 (Spotlight → "터미널")</li>
+          <li><code>xcode-select --install</code> 입력</li>
+          <li>설치 안내창이 뜨면 "설치" 클릭</li>
+        </ol>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">
+          이미 Xcode가 깔려 있다면 그대로 사용 가능합니다.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <strong>설치 확인 방법:</strong> 터미널(또는 Git Bash)에서 <code>git --version</code>을 입력해 <code>git version 2.xx.x</code>처럼 나오면 OK입니다.
+    </div>
+
+    <h3>1-2. VS Code(Visual Studio Code) 설치</h3>
+    <p>코드를 작성하고 Git/GitHub과 연동하는 가장 일반적인 편집기입니다. Claude Code도 이 안에서 사용합니다.</p>
+    <ol>
+      <li><a href="https://code.visualstudio.com/" target="_blank">code.visualstudio.com</a> 접속</li>
+      <li>본인 운영체제(OS)에 맞는 버전 다운로드 → 설치</li>
+      <li>설치 후 실행해 메뉴가 한글로 보이지 않는다면, 왼쪽 사이드바 ⚙ → Extensions에서 <strong>"Korean Language Pack"</strong>을 설치하면 한글로 바뀝니다.</li>
+    </ol>
+    <a class="btn" href="https://code.visualstudio.com/" target="_blank">VS Code 다운로드</a>
+
+    <h3>1-3. Node.js 설치 <span style="color: var(--text-muted); font-size: 14px; font-weight: normal;">(선택 사항)</span></h3>
+    <p>예전에는 Claude Code를 쓰려면 Node.js 설치가 꼭 필요했지만, <strong>지금은 VS Code 확장 프로그램</strong>만 깔면 자동으로 모두 해결됩니다. 그래서 이 항목은 <strong>건너뛰셔도 무방</strong>합니다.</p>
+    <p style="font-size: 14px; color: var(--text-muted);">개발에 익숙해지신 후 자체 도구를 설치하고 싶으실 때 <a href="https://nodejs.org/" target="_blank">nodejs.org</a>에서 LTS 버전을 받아두시면 됩니다.</p>
+
+    <div class="callout warning">
+      <strong>참고 — 학교/교육청 컴퓨터에서 설치가 막힐 때:</strong> 관리자 권한이 필요한 경우, 본인 노트북을 가져오시거나 미리 정보부서에 설치 요청을 해 두시는 편이 좋습니다.
+    </div>
+  </section>
+
+  <!-- ========== Section 2 ========== -->
+  <section>
+    <h2><span class="num">2</span>AI 활용을 위한 사전 지식</h2>
+    <p class="lead">Claude Code 같은 AI 코딩 도구를 활용하려면 몇 가지 용어와 개념을 알고 계시면 훨씬 수월합니다. 외울 필요는 없고, "이런 게 있구나" 정도로 훑어보시면 됩니다.</p>
+
+    <h3>2-1. 꼭 알아둘 핵심 용어</h3>
+    <div class="glossary">
+      <div class="glossary-item">
+        <div class="term">Repository (레포, 저장소)</div>
+        <div class="def">프로젝트 파일들이 담긴 폴더. GitHub의 가장 기본 단위입니다.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">Commit (커밋)</div>
+        <div class="def">"이 시점의 상태를 저장!"이라는 도장. 변경 이력을 남기는 단위.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">Push / Pull</div>
+        <div class="def">내 컴퓨터의 변경을 GitHub에 올리는 게 push, 반대로 받아오는 게 pull.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">Branch (브랜치)</div>
+        <div class="def">본 줄기에서 가지를 쳐서 따로 작업하는 공간. 협업의 핵심.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">Deploy (배포)</div>
+        <div class="def">코드를 실제 웹사이트 등으로 띄워 누구나 볼 수 있게 하는 일.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">Terminal / CLI</div>
+        <div class="def">검은 화면에 명령어로 컴퓨터를 조작하는 도구. Git Bash, 터미널 등.</div>
+      </div>
+    </div>
+
+    <h3>2-2. Claude Code란?</h3>
+    <p>Claude Code는 Anthropic이 만든 <strong>AI 코딩 도구</strong>입니다. "내 컴퓨터의 폴더와 파일을 직접 보고 수정해 주는 AI"라고 이해하시면 쉽습니다.</p>
+    <ul>
+      <li>채팅창에 코드를 복사·붙여넣기 하지 않아도 됩니다 — AI가 직접 파일을 읽고 고칩니다.</li>
+      <li>"이 폴더 안에서 HTML 파일을 만들고 배포 준비해 줘" 같은 <strong>자연어 지시</strong>가 가능합니다.</li>
+      <li><strong>한국어로 입력하면 한국어로 답합니다</strong> — 별도 설정 불필요.</li>
+      <li><strong>설치는 VS Code 확장 프로그램 하나면 끝</strong>입니다. 터미널 명령이나 Node.js 설치가 필요 없어졌습니다. 동아리 시간에 함께 설치해 보니, <strong>지금 미리 설치하실 필요는 없습니다.</strong></li>
+    </ul>
+
+    <div class="callout">
+      <strong>참고 — Claude 계정 안내:</strong> Claude Code는 <strong>Claude Pro 이상 유료 계정</strong>이 필요합니다(월 $20부터). 동아리 시간에는 강사/운영자 계정으로 시연 위주로 진행할 예정이니, 미리 결제하실 필요는 없습니다. 본인 업무에 본격 활용해 보고 싶으신 분만 시범 사용 후 결정하시면 됩니다.
+    </div>
+
+    <h3>2-3. AI에게 일을 시킬 때 도움이 되는 마음가짐</h3>
+    <div class="step-card">
+      <div class="step-title">① 한 번에 큰 덩어리를 던지지 말고, 작게 쪼개기</div>
+      "웹사이트 만들어 줘"보다 "한 페이지짜리 HTML로 자기소개 페이지, 제목과 사진 자리, 연락처 섹션 포함" 처럼 구체적으로.
+    </div>
+    <div class="step-card">
+      <div class="step-title">② 결과가 어색하면 "왜 그렇게 했어?" 묻기</div>
+      AI도 실수합니다. 그럴 땐 다시 시키지 말고, 의도를 설명해 달라고 한 뒤 함께 수정 방향을 잡으시면 좋습니다.
+    </div>
+    <div class="step-card">
+      <div class="step-title">③ 만든 결과는 반드시 한 번 직접 확인하기</div>
+      AI가 "다 됐어요"라고 해도, 브라우저에서 열어보거나 직접 실행해 보시는 습관이 중요합니다.
+    </div>
+
+    <div class="callout">
+      <strong>잠깐!</strong> AI 도구가 만든 코드를 깃허브에 올릴 때는, <strong>비밀번호·API 키·개인정보가 코드 안에 들어가 있지 않은지</strong> 한 번 확인하는 습관을 들이세요. 공개 레포에 올라가면 누구나 볼 수 있습니다.
+    </div>
+  </section>
+
+  <!-- ========== Section 3 ========== -->
+  <section>
+    <h2><span class="num">3</span>GitHub 가입하기</h2>
+    <p class="lead">GitHub는 무료로 가입할 수 있습니다. 평소에 자주 쓰시는 이메일로 가입하시면 됩니다.</p>
+
+    <h3>가입 절차</h3>
+    <ol>
+      <li><a href="https://github.com/signup" target="_blank">github.com/signup</a> 접속</li>
+      <li><strong>이메일</strong> 입력 → Continue<br>
+        <span style="font-size: 13.5px; color: var(--text-muted);">※ 업무용보다는 개인 이메일(Gmail 등)을 권장합니다. 인사이동·퇴직 후에도 계정이 유지됩니다.</span>
+      </li>
+      <li><strong>비밀번호</strong> 설정 (15자 이상, 또는 8자 이상 + 숫자·소문자 포함)</li>
+      <li><strong>사용자명(Username)</strong> 설정<br>
+        <span style="font-size: 13.5px; color: var(--text-muted);">※ 다른 사람과 겹치지 않는 영문 ID. 예: <code>kim-sihyung</code>, <code>cne-teacher01</code> 등. 한 번 정하면 자주 바꾸기 어려우니 신중하게.</span>
+      </li>
+      <li>이메일 수신 동의 여부 선택 → Continue</li>
+      <li>퍼즐로 사람인지 확인 → 이메일로 받은 <strong>인증 코드</strong> 입력</li>
+      <li>설문(선택사항)은 모두 건너뛰셔도 됩니다 → <strong>Free 플랜</strong> 선택</li>
+    </ol>
+
+    <div class="callout success">
+      <strong>가입 완료 확인:</strong> 로그인 후 우측 상단에 본인의 프로필 사진(또는 기본 아이콘)이 보이고, 좌측에 "Create your first repository"가 나오면 정상입니다.
+    </div>
+
+    <h3>가입 후 권장 작업 (5분)</h3>
+    <ol>
+      <li><strong>프로필 사진 설정</strong> — 우측 상단 아바타 → Settings → Profile → Picture<br>
+        <span style="font-size: 13.5px; color: var(--text-muted);">동아리에서 누가 누구인지 알아보기 좋게 본인 사진이나 캐릭터를 올려두세요.</span>
+      </li>
+      <li><strong>표시 이름(Name) 한글로 설정</strong> — 같은 페이지에서 Name 칸에 "김시형" 등 표시할 이름 입력</li>
+      <li><strong>2단계 인증(2FA) 설정 권장</strong> — Settings → Password and authentication → Two-factor authentication<br>
+        <span style="font-size: 13.5px; color: var(--text-muted);">의무는 아니지만 보안상 권장됩니다. 스마트폰 인증 앱(Google Authenticator 등)으로 설정 가능.</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ========== Section 4 — Checklist ========== -->
+  <section>
+    <h2><span class="num">✓</span>출발 전 체크리스트</h2>
+    <p class="lead">동아리 활동 당일 아침, 아래 항목들을 한 번씩 확인해 주세요. 모두 ✅이면 곧바로 실습에 들어갈 수 있습니다.</p>
+
+    <ul class="check-list">
+      <li>Git 설치 완료 (<code>git --version</code> 실행 시 버전 표시됨)</li>
+      <li>VS Code 설치 완료 및 실행 가능</li>
+      <li>GitHub 계정 가입 및 이메일 인증 완료</li>
+      <li>GitHub에 로그인 가능 (브라우저 즐겨찾기에 추가해 두면 편함)</li>
+      <li>본인이 가입할 때 쓴 <strong>GitHub 사용자명과 이메일</strong>을 메모해 둠</li>
+      <li>노트북 전원 어댑터 지참, 와이파이 접속 확인</li>
+    </ul>
+
+    <div class="callout">
+      <strong>설치 중 막히는 부분이 있으시면</strong> 동아리 단톡방 또는 담당자에게 미리 알려 주세요. 당일 설치부터 시작하면 실습 시간이 부족합니다.
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">?</span>자주 묻는 질문</h2>
+    <div class="step-card">
+      <div class="step-title">Q. 코딩을 한 번도 안 해봤는데 따라갈 수 있을까요?</div>
+      네, 충분합니다. 이번 동아리는 <strong>"코드를 직접 짜는 법"</strong>이 아니라 <strong>"AI에게 시키고, 결과를 깃허브로 관리·배포하는 법"</strong>을 익히는 자리입니다. 기본 마우스 조작과 한글 타자만 되시면 OK입니다.
+    </div>
+    <div class="step-card">
+      <div class="step-title">Q. 학교 컴퓨터에서 프로그램 설치가 안 됩니다.</div>
+      관리자 권한이 막혀 있을 가능성이 큽니다. 가능하면 <strong>개인 노트북</strong>을 가져오시거나, 정보부서에 미리 협조 요청을 해 두세요.
+    </div>
+    <div class="step-card">
+      <div class="step-title">Q. Claude Code는 유료인가요?</div>
+      네, <strong>Claude Pro 이상 유료 계정</strong>(월 $20부터)이 필요합니다. 다만 <strong>동아리 시간에는 운영자 계정으로 시연 위주로 진행</strong>할 예정이니, 미리 결제하실 필요는 없습니다. 직접 사용해 보고 업무에 도움이 되겠다 싶을 때 가입을 고려해 보세요.
+    </div>
+    <div class="step-card">
+      <div class="step-title">Q. 깃허브에 올린 내용을 나중에 지울 수 있나요?</div>
+      네, 본인이 만든 레포는 언제든 삭제할 수 있습니다. 다만 다른 사람이 이미 복제(fork/clone)해 갔다면 그 사본은 사라지지 않습니다. 그래서 <strong>비밀번호·개인정보는 처음부터 올리지 않는 것</strong>이 중요합니다.
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  충청남도교육청 중등교육과 · AI 동아리 운영자료<br>
+  본 안내문은 동아리 활동 사전 준비용으로 제작되었습니다.
+</footer>
+
+</body>
+</html>
